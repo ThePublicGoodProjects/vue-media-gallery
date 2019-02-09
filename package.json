@@ -14,9 +14,17 @@
     "@vue/cli-plugin-babel": "^3.4.0",
     "@vue/cli-plugin-eslint": "^3.4.0",
     "@vue/cli-service": "^3.4.0",
+    "axios": "^0.18.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "font-awesome": "^4.7.0",
+    "foundation-sites": "^6.5.3",
+    "jquery": "^3.3.1",
+    "lodash": "^4.17.11",
+    "micromodal": "^0.3.2",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.21"
   },
   "eslintConfig": {

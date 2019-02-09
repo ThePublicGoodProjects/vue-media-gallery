@@ -1,17 +1,17 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Posts campaign="mental-health-champions" host="https://downloadcenter.actionminded.org" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Posts from './components/Posts.vue'
+import './assets/sass/app.scss';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Posts
   }
 }
 </script>

@@ -1,0 +1,203 @@
+
+.campaign-posts {
+
+    label {
+        text-align: left;
+    }
+
+    .post-card {
+        text-align: left;
+
+        .media-object-section {
+            width: 50%;
+        }
+
+        &.campaign {
+            img {
+                margin-bottom: 1rem;
+            }
+
+            .button.clear {
+                color: black;
+            }
+
+            p:not(:first-child) {
+                text-align: left;
+            }
+
+        }
+
+        .teaser {
+            img {
+                max-height: 70px;
+            }
+        }
+
+        .img,
+        .thumbnail {
+            background-color: $white;
+            margin: 0;
+            width: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 300px;
+            border: none;
+            @include breakpoint(medium) {
+                background-size: cover;
+                height: 300px;
+            }
+            @include breakpoint(large) {
+                height: 300px;
+            }
+
+            &.contain {
+                background-size: contain;
+
+            }
+        }
+
+        .media-object {
+            .thumbnail {
+                background-size: cover;
+                height: 300px;
+                @include breakpoint(medium) {
+                    height: 300px;
+                }
+            }
+
+            @include breakpoint(small only) {
+                border-bottom: 1px solid #ccc;
+                margin-bottom: 4rem;
+            }
+        }
+
+        .title {
+            margin-bottom: .5rem;
+        }
+
+        .media-object-section {
+            padding: 1rem;
+
+            &.image {
+                padding: 0;
+            }
+
+            &.text {
+                padding: 0 1rem;
+                @include breakpoint(small only) {
+                    text-align: center;
+                }
+
+                p,
+                span:not(.label) {
+                    font-family: $body-font-family !important;
+                    font-size: $global-font-size !important;
+                }
+            }
+        }
+
+        .img.contain {
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 70px;
+            margin-top: 2rem;
+            @include breakpoint(medium) {
+                //height: 200px;
+                max-width: 300px;
+                margin: 0 auto;
+                //height : 300px;
+
+            }
+        }
+
+    }
+
+    .post-results {
+        min-height: 700px;
+
+        .list-view {
+
+            > * {
+                border-bottom: 1px solid $medium-gray;
+                padding: 1rem 0;
+            }
+
+            .post-card {
+                .thumbnail {
+                    width: 100px;
+                    height: 100px;
+                    @include breakpoint(medium) {
+
+                        width: 200px;
+                        height: 200px;
+                    }
+                }
+
+                .list-item {
+                    position: relative;
+                    display: flex;
+
+                    .thumbnail {
+                        display: block;
+                    }
+
+                    .details {
+                        margin: 1rem 0 0 0;
+                        @include breakpoint(medium) {
+                            margin: 0 1rem;
+                            width: calc(100% - 300px);
+                        }
+                    }
+
+                    .title {
+                        > * {
+                            display: inline-block;
+                        }
+
+                    }
+
+                    .list-item-content {
+                        flex-grow: 1;
+
+                        > * {
+                            @include breakpoint(medium) {
+                                display: inline-block;
+                                vertical-align: top;
+                            }
+
+                        }
+
+                        .details-body {
+                            //display:none;
+                            @include breakpoint(medium) {
+                                display: block;
+                            }
+                        }
+
+                        .title {
+                            > * {
+                                vertical-align: top;
+                            }
+
+                            .label {
+                                margin-left: .5rem;
+                            }
+                        }
+                    }
+
+                    .list-item-download {
+                        position: absolute;
+                        right: 1rem;
+                    }
+
+                    > * {
+                        &:last-child {
+                            margin-left: auto;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
