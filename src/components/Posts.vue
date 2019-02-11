@@ -54,9 +54,9 @@
                         </button>
                     </div>
                 </div>
-                <div class="text-right margin-right-1">Total: {{ pagination.total}}</div>
             </div>
             <div class="post-results margin-bottom-3">
+                <div class="text-right margin-right-1">Total: {{ pagination.total}}</div>
                 <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage" :changePage="changePage" :settings="pagination"></pagination>
                 <div class="grid-x grid-padding-x" :class="viewModeClass" v-if="hasPosts">
                     <div class="cell post-card" v-for="post in posts" :key="post.id">
