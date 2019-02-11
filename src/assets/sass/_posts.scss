@@ -1,8 +1,58 @@
+$facebook-color: #4267b2;
+$twitter-color: #1DA1F2;
+$download-button-bg: #e0dddd;
+$download-button-color: #6b6b6b;
+
+.button-facebook,
+.button-download,
+.button-twitter {
+    width: 50px;
+}
+
+.button-facebook {
+    background-color: $facebook-color;
+    color: white;
+    &:hover {
+        background-color: darken($facebook-color, 10%);
+
+    }
+}
+
+.button-twitter {
+    background-color: $twitter-color;
+    color: white;
+
+    &:hover {
+        background-color: darken($twitter-color, 10%);
+
+    }
+}
+
+.button-download {
+    background-color: $download-button-bg;
+    color: $download-button-color;
+
+    &:visited,
+    &:hover,
+    &:active {
+        color: $download-button-color;
+        background-color: darken($download-button-bg, 10%);
+    }
+}
 
 .campaign-posts {
 
     label {
         text-align: left;
+    }
+
+    .list-item-download {
+        //position: absolute;
+        //right: 1rem;
+
+        > * {
+            margin-right: 5px;
+        }
     }
 
     .post-card {
@@ -186,10 +236,7 @@
                         }
                     }
 
-                    .list-item-download {
-                        position: absolute;
-                        right: 1rem;
-                    }
+
 
                     > * {
                         &:last-child {

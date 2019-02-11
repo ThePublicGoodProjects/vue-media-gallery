@@ -11,9 +11,15 @@
                           v-for="tag in post.tag_names" :key="tag">{{tag}}</span>
                 </p>
                 <p v-html="filterTeaser(post.body)" @click="showModal()"></p>
-                <div class="">
-                    <a class="button download-button radius" @click="download(post)" :href="downloadUrl"
-                       :data-ga-label="post.file_path">
+                <div class="list-item-download">
+                    <a v-if="enableFacebook" href="" class="button radius button-facebook" @click.prevent="shareFacebook()">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a v-if="enableTwitter" :href="'https://twitter.com/intent/tweet?text=' + post.file_path" class="button radius button-twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a class="button button-download radius" @click="download(post)" :href="downloadUrl"
+                       :data-ga-label="post.file_path" title="download">
                         <i class="fas fa-download"></i>
                     </a>
                 </div>
@@ -40,8 +46,14 @@
                 </div>
             </div>
             <div class="list-item-download">
-                <a class="button download-button radius" @click="download(post)" :href="downloadUrl"
-                   :data-ga-label="post.file_path">
+                <a v-if="enableFacebook" href="" class="button radius button-facebook" @click.prevent="shareFacebook()">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a v-if="enableTwitter" :href="'https://twitter.com/intent/tweet?text=' + post.file_path" class="button radius button-twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a class="button button-download radius" @click="download(post)" :href="downloadUrl"
+                   :data-ga-label="post.file_path" title="download">
                     <i class="fas fa-download"></i>
                 </a>
             </div>
@@ -50,6 +62,7 @@
 </template>
 
 <script>
+    /* eslint-disable no-unused-vars, no-undef */
     const $ = require('jquery'),
           _ = require('lodash');
 
@@ -77,7 +90,10 @@
             }
         },
         data() {
-            return {};
+            return {
+                enableFacebook: false,
+                enableTwitter: false
+            };
         },
         created() {
         },
@@ -132,7 +148,26 @@
             },
             download    : function (post) {
                 this.$emit('download', post);
-
+            },
+            shareFacebook: function () {
+                function shareOverrideOGMeta(overrideLink, overrideTitle, overrideDescription, overrideImage) {
+                    FB.ui({
+                            method           : 'share_open_graph',
+                            action_type      : 'og.likes',
+                            action_properties: JSON.stringify({
+                                object: {
+                                    'og:url'        : overrideLink,
+                                    'og:title'      : overrideTitle,
+                                    'og:description': overrideDescription,
+                                    'og:image'      : overrideImage
+                                }
+                            })
+                        },
+                        function () {
+                            // Action after response
+                        });
+                }
+                shareOverrideOGMeta(location.origin, 'Mental Health Champions', this.post.body, this.post.file_path);
             },
             selectTag   : function (tag) {
                 this.$emit('selectTag', tag);

@@ -1,7 +1,7 @@
 <template>
     <div class="campaign-posts" v-if="loaded">
         <div>
-            <div class="margin-bottom-1">
+            <div v-if="enableOptions" class="post-options margin-bottom-1">
                 <div class="callout radius primary">
                     <div class="margin-bottom-1">
                         <ul class="menu align-left">
@@ -53,14 +53,6 @@
                             <i v-else class="far fa-square"></i>
                         </button>
                     </div>
-                    <!--<div class="view-mode-buttons">-->
-                        <!--<button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'active' : ''" type="button" title="Gallery View" class="button clear cursor-pointer">-->
-                            <!--<i class="fas fa-th"></i>-->
-                        <!--</button>-->
-                        <!--<button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'active' : ''" type="button" title="List View" class="button clear">-->
-                            <!--<i class="fas fa-th-list"></i>-->
-                        <!--</button>-->
-                    <!--</div>-->
                 </div>
                 <div class="text-right margin-right-1">Total: {{ pagination.total}}</div>
             </div>
@@ -182,6 +174,7 @@
                     type    : '',
                     pageNum : 1
                 },
+                enableOptions   : false,
                 downloadCategory: 'download',
                 downloadAction  : location.pathname,
                 posts           : [],

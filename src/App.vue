@@ -5,13 +5,15 @@
 </template>
 
 <script>
-import Posts from './components/Posts.vue'
 import './assets/sass/app.scss';
+import Posts from './components/Posts.vue'
 
 export default {
   name: 'app',
   components: {
     Posts
+  },
+  mounted() {
   }
 }
 </script>
