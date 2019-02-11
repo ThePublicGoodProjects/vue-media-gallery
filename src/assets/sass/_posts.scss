@@ -72,6 +72,11 @@ $download-button-color: #6b6b6b;
 
 .campaign-posts {
 
+    .post-total {
+        float:right;
+        margin-right: 1rem;
+    }
+
     label {
         text-align: left;
     }
