@@ -1,17 +1,24 @@
 {
-  "name": "action-minded-gallery",
+  "name": "@cam.wiley/pgp-downloadcenter",
   "version": "0.1.0",
-  "private": true,
+  "main"   : "dist/pgpDownloadCenter.umd.js",
+  "module" : "dist/pgpDownloadCenter.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-lib": "vue-cli-service build --target lib --name pgpMhcGallery ./src/App.vue",
-    "build-web": "vue-cli-service build --target wc --name mhc-gallery src/main.js",
+    "build-bundle": "vue-cli-service build --target lib --name pgpDownloadCenter ./src/index.js",
+    "build-lib": "vue-cli-service build --target lib --name pgpDownloadCenter ./src/App.vue",
+    "build-web": "vue-cli-service build --target lib --name posts ./src/components/Posts.vue",
     "lint": "vue-cli-service lint"
   },
-  "dependencies": {
-    "vue": "^2.5.22"
-  },
+  "files" : [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js"
+  ],
+  "dependencies": {},
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.7.1",
     "@vue/cli-plugin-babel": "^3.4.0",
@@ -27,7 +34,8 @@
     "micromodal": "^0.3.2",
     "node-sass": "^4.11.0",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.5.21"
+    "vue": "^2.6.9",
+    "vue-template-compiler": "^2.6.9"
   },
   "eslintConfig": {
     "root": true,

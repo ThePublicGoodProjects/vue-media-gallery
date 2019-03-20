@@ -63,8 +63,10 @@
 
 <script>
     /* eslint-disable no-unused-vars, no-undef */
-    const $ = require('jquery'),
-          _ = require('lodash');
+    const isDevelopment = process.env.NODE_ENV === 'development',
+          $             = require('jquery'),
+          _             = require('lodash'),
+          debug         = require('../js/debug')(isDevelopment);
 
     export default {
         name      : "PostItem",
@@ -84,15 +86,15 @@
                 type   : Boolean,
                 default: false
             },
-            host: {
-                type: String,
+            host       : {
+                type   : String,
                 default: ''
             }
         },
         data() {
             return {
                 enableFacebook: false,
-                enableTwitter: false
+                enableTwitter : false
             };
         },
         created() {
@@ -135,7 +137,7 @@
             }
         },
         methods   : {
-            filterTeaser: function (fullText) {
+            filterTeaser : function (fullText) {
                 if (fullText) {
                     let text = $(fullText.replace(/<br>/g, '\n')).text();
                     if (text.length > 140) {
@@ -146,7 +148,7 @@
 
                 return fullText;
             },
-            download    : function (post) {
+            download     : function (post) {
                 this.$emit('download', post);
             },
             shareFacebook: function () {
@@ -167,12 +169,13 @@
                             // Action after response
                         });
                 }
+
                 shareOverrideOGMeta(location.origin, 'Mental Health Champions', this.post.body, this.post.file_path);
             },
-            selectTag   : function (tag) {
+            selectTag    : function (tag) {
                 this.$emit('selectTag', tag);
             },
-            showModal   : function () {
+            showModal    : function () {
                 this.$emit('showModal', this.post);
             },
             isSelected(name) {
@@ -182,6 +185,5 @@
     };
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
 </style>

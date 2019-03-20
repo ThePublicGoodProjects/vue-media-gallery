@@ -1,0 +1,25 @@
+<meta charset="utf-8">
+<title>posts demo</title>
+<script src="https://unpkg.com/vue"></script>
+<script src="./posts.umd.js"></script>
+
+<link rel="stylesheet" href="./posts.css">
+
+
+<div id="app">
+  <posts :options="{host: 'http://downloadcenter.publicgoodprojects.lcl', perPage: 2, campaign: 'mental-health-champions'}"></posts>
+</div>
+
+<script>
+  new Vue({
+    el        : '#app',
+    components: {
+      posts: posts
+    }
+  });
+  // new Vue({
+  //   components: {
+  //     demo: posts
+  //   }
+  // }).$mount('#app')
+</script>

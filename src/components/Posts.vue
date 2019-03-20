@@ -1,7 +1,7 @@
 <template>
-    <div class="campaign-posts" v-if="loaded">
+    <div class="posts" v-if="loaded">
         <div>
-            <div v-if="enableOptions" class="post-options margin-bottom-1">
+            <div v-if="showOptions" class="post-options margin-bottom-1">
                 <div class="callout radius primary">
                     <div class="margin-bottom-1">
                         <ul class="menu align-left">
@@ -53,29 +53,37 @@
                             <i v-else class="far fa-square"></i>
                         </button>
                     </div>
+                    <div class="view-mode-buttons">
+                        <button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'active' : ''" type="button" title="Gallery View" class="button clear cursor-pointer">
+                            <i class="fas fa-th"></i>
+                        </button>
+                        <button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'active' : ''" type="button" title="List View" class="button clear">
+                            <i class="fas fa-th-list"></i>
+                        </button>
+                    </div>
                 </div>
+                <div class="text-right margin-right-1">Total: {{ pagination.total}}</div>
             </div>
             <div class="post-results margin-bottom-3">
-                <!--<div class="post-total margin-right-1">Total: {{ pagination.total}}</div>-->
                 <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage" :changePage="changePage" :settings="pagination"></pagination>
                 <div class="grid-x grid-padding-x" :class="viewModeClass" v-if="hasPosts">
                     <div class="cell post-card" v-for="post in posts" :key="post.id">
                         <post :mode="viewMode" :is-checked="isPostSelected(post.id)" @checked="checked" @selectTag="selectTag" @showModal="showModal" @download="download"
                               :enabledTags="enabledTags"
-                              :post="post" :host="host"></post>
+                              :post="post" :host="options.host"></post>
                     </div>
                 </div>
                 <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage" :changePage="changePage" :settings="pagination"></pagination>
             </div>
         </div>
-        <div class="modal micromodal-slide" id="modal-1" aria-hidden="true">
+        <div class="modal posts-modal micromodal-slide" id="posts-modal" aria-hidden="true">
             <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-                <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="modal-1-title">
+                <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="posts-modal-title">
                     <div class="flex-container align-right">
                         <button class="button clear modal-close" data-micromodal-close aria-label="Close this dialog window"><i class="fas fa-times" data-micromodal-close></i>
                         </button>
                     </div>
-                    <main class="modal__content" id="modal-1-content">
+                    <main class="modal__content" id="posts-modal-content">
                         <div class="text-center">
                             <video v-if="modal.file_type === 'video' && modal.type === 'url'" controls>
                                 <source :src="videoSrc(modal.url)">
@@ -83,11 +91,14 @@
                             <video v-else-if="modal.file_type === 'video'" controls>
                                 <source :src="modal.file_path">
                             </video>
-                            <img v-else :src="modal.thumbnail_path" alt="">
+                            <img v-else :src="modal.image" alt="">
                         </div>
                         <div class="modal__title text-center" v-if="modal.title">{{ modal.title }}</div>
                         <div class="modal__body" v-if="modal.body" v-html="modal.body"></div>
                     </main>
+                    <div class="text-center" v-if="modal.clipboard">
+                        <copy-to-clipboard :content="modal.clipboard"></copy-to-clipboard>
+                    </div>
                     <div class="text-center margin-top-1">
                         <a @click="download(modal)" class="button" :href="downloadUrl(modal)">Download</a>
                     </div>
@@ -103,56 +114,27 @@
           MicroModal = require('micromodal').default,
           $          = require('jquery'),
           _          = require('lodash');
+    // hashParams = require('../js/hash-params.js');
     // gtmEvents  = require('../gtm-events.js');
 
+    import * as HashParams from '../js/hash-params';
+    import CopyToClipboard from './CopyToClipboard';
     import Post from './Post';
     import Pagination from './Pagination';
-
-    function hashParams() {
-        return decodeURIComponent(location.hash).replace(/#/, '').split('&').reduce((acc, n) => {
-            let vals    = n.split('='),
-                isArray = false,
-                key;
-            if (vals.length > 1) {
-                isArray = /\[/.test(vals[0]);
-                key     = vals[0].replace(/[\][]/g, '');
-
-                if (isArray) {
-
-                    if (!acc[key]) {
-                        acc[key] = [];
-                    }
-
-                    acc[key].push(vals[1]);
-
-                } else {
-                    acc[key] = vals[1];
-                }
-            }
-            return acc;
-        }, {});
-    }
 
     export default {
         name      : "Posts",
         components: {
             Post,
-            Pagination
+            Pagination,
+            CopyToClipboard
         },
         props     : {
-            details : {
-                type   : Boolean,
-                default: true
-            },
-            campaign: {
-                type: String
-            },
-            clientId: {
-                type: Number
-            },
-            host    : {
-                type   : String,
-                default: ''
+            options: {
+                type   : Object,
+                default: function () {
+                    return {};
+                }
             }
         },
         data() {
@@ -172,9 +154,9 @@
                     orderBy : 'new',
                     category: '',
                     type    : '',
-                    pageNum : 1
+                    pageNum : 1,
+                    perPage : this.options.perPage || 10
                 },
-                enableOptions   : false,
                 downloadCategory: 'download',
                 downloadAction  : location.pathname,
                 posts           : [],
@@ -183,11 +165,12 @@
                 tags            : [],
                 enabledTags     : [],
                 selectedPosts   : [],
+                showOptions     : (!this.options.enableOptions || this.options.enableOptions === 'false') ? false : true,
                 types           : [],
                 categories      : [],
                 modal           : {},
                 viewMode        : 'grid',
-                showDetails     : (!this.details || this.details === 'false') ? false : true,
+                showDetails     : (!this.options.details || this.options.details === 'false') ? false : true,
                 loaded          : false,
             };
         },
@@ -196,13 +179,13 @@
         mounted() {
             let url;
             this.params = {};
-            if (this.campaign) {
-                this.url = this.host + '/api/campaigns/' + this.campaign;
-            } else if (this.clientId) {
-                this.url = this.host + '/api/assets/' + this.clientId;
+            if (this.options.campaign) {
+                this.url = this.options.host + '/api/campaigns/' + this.options.campaign;
+            } else if (this.options.clientId) {
+                this.url = this.options.host + '/api/assets/' + this.options.clientId;
             }
 
-            let hashVals = hashParams();
+            let hashVals = HashParams.parse();
 
             if (hashVals.viewMode) {
                 this.viewMode = hashVals.viewMode;
@@ -219,6 +202,11 @@
             }
             if (hashVals.order) {
                 this.data.orderBy = hashVals.orderBy === 'asc' ? 'old' : 'new';
+            }
+
+
+            if (hashVals.perPage) {
+                this.data.perPage = hashVals.perPage;
             }
 
             this.loadUrl(this.url, hashVals);
@@ -314,6 +302,10 @@
                 this.params.tags = newValue;
                 this.loadUrl(this.params);
             },
+            'data.perPage' : function (newValue) {
+                this.params.perPage = newValue;
+                this.loadUrl(this.params);
+            },
             viewMode       : function (newValue) {
                 location.hash = 'viewMode=' + newValue;
             }
@@ -330,6 +322,8 @@
                 }
 
                 params = params || {};
+
+                params.perPage = this.data.perPage;
 
                 if (/\?/.test(url)) {
                     window.location.hash = url.split('?')[1];
@@ -353,7 +347,7 @@
                 });
             },
             downloadUrl: function (post) {
-                return '' + (post.url ? post.url : '/download/' + post.file);
+                return this.options.host + (post.url ? post.url : '/download/' + post.file);
             },
             download   : function (post) {
                 // gtmEvents.log(this.downloadCategory, this.downloadAction, post.url ? post.url : post.file);
@@ -363,14 +357,15 @@
                 let vm = this;
                 setTimeout(function () {
                     vm.modal = {};
-                    MicroModal.close('modal-1'); // [1]
+                    MicroModal.close('posts-modal'); // [1]
                 }, 500);
             },
             showModal            : function (post) {
                 let vm = this;
 
-                this.modal = post;
-                MicroModal.show('modal-1', {
+                this.modal       = post;
+                this.modal.image = this.modal.thumbnail_path || this.modal.file_path;
+                MicroModal.show('posts-modal', {
                     onClose: function () {
                         vm.modal = {};
                     }
@@ -444,7 +439,7 @@
                 });
             },
             downloadSelectedPosts: function () {
-                window.location = this.host + '/download-batch?d=' + this.selectedPosts.join(',');
+                window.location = this.options.host + '/download-batch?d=' + this.selectedPosts.join(',');
                 this.deselectAllPosts();
             },
             firstPage            : function () {
@@ -496,6 +491,6 @@
     };
 </script>
 
-<style scoped>
-
+<style lang="scss">
+    @import '../assets/sass/app.scss';
 </style>

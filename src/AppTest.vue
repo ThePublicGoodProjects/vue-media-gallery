@@ -8,9 +8,10 @@
 <script>
     import Vue from 'vue';
     import Posts from './components/Posts.vue';
+    import _ from 'lodash';
 
     let defaults = {
-        host         : 'https://downloadcenter.actionminded.org',
+        host         : 'http://downloadcenter.publicgoodprojects.lcl',
         perPage      : 10,
         enableOptions: true,
         campaign     : 'mental-health-champions',
