@@ -1,8 +1,8 @@
 {
   "name": "@cam.wiley/pgp-downloadcenter",
-  "version": "0.1.0",
-  "main"   : "dist/pgpDownloadCenter.umd.js",
-  "module" : "dist/pgpDownloadCenter.common.js",
+  "version": "0.1.1",
+  "main": "dist/pgpDownloadCenter.umd.js",
+  "module": "dist/pgpDownloadCenter.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -11,7 +11,7 @@
     "build-web": "vue-cli-service build --target lib --name posts ./src/components/Posts.vue",
     "lint": "vue-cli-service lint"
   },
-  "files" : [
+  "files": [
     "dist/*",
     "src/*",
     "public/*",
