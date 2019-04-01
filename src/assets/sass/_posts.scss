@@ -240,6 +240,7 @@ $download-button-color: #6b6b6b;
 
         .media-object {
             .thumbnail {
+                box-shadow: none;
                 background-size: contain;
                 height:270px;
                 background-color: #f4f4f4;
