@@ -1,64 +1,66 @@
 {
-  "name": "@cam.wiley/pgp-downloadcenter",
-  "version": "0.1.1",
-  "main": "dist/pgpDownloadCenter.umd.js",
-  "module": "dist/pgpDownloadCenter.common.js",
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "build-bundle": "vue-cli-service build --target lib --name pgpDownloadCenter ./src/index.js",
-    "build-lib": "vue-cli-service build --target lib --name pgpDownloadCenter ./src/App.vue",
-    "build-web": "vue-cli-service build --target lib --name posts ./src/components/Posts.vue",
-    "lint": "vue-cli-service lint"
-  },
-  "files": [
-    "dist/*",
-    "src/*",
-    "public/*",
-    "*.json",
-    "*.js"
-  ],
-  "dependencies": {},
-  "devDependencies": {
-    "@fortawesome/fontawesome-free": "^5.7.1",
-    "@vue/cli-plugin-babel": "^3.4.0",
-    "@vue/cli-plugin-eslint": "^3.4.0",
-    "@vue/cli-service": "^3.4.0",
-    "axios": "^0.18.0",
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.8.0",
-    "eslint-plugin-vue": "^5.0.0",
-    "foundation-sites": "^6.5.3",
-    "jquery": "^3.3.1",
-    "lodash": "^4.17.11",
-    "micromodal": "^0.3.2",
-    "node-sass": "^4.11.0",
-    "sass-loader": "^7.1.0",
-    "vue": "^2.6.9",
-    "vue-template-compiler": "^2.6.9"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
+    "name"            : "@cam.wiley/pgp-downloadcenter",
+    "version"         : "0.1.1",
+    "main"            : "dist/pgpDownloadCenter.umd.js",
+    "module"          : "dist/pgpDownloadCenter.common.js",
+    "unpkg"           : "dist/pgpDownloadCenter.umd.js",
+    "scripts"         : {
+        "serve"        : "vue-cli-service serve",
+        "build"        : "vue-cli-service build",
+        "build-bundle" : "vue-cli-service build --target lib --name pgpDownloadCenter ./src/index.js",
+        "build-lib"    : "vue-cli-service build --target lib --name pgpDownloadCenter ./src/App.vue",
+        "build-web"    : "vue-cli-service build --target lib --name posts ./src/components/Posts.vue",
+        "lint"         : "vue-cli-service lint"
     },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
+    "files"           : [
+        "dist/*",
+        "src/*",
+        "public/*",
+        "*.json",
+        "*.js"
     ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "babel-eslint"
-    }
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+    "dependencies"    : {
+        "vue" : "^2.6.9"
+    },
+    "devDependencies" : {
+        "@fortawesome/fontawesome-free" : "^5.7.1",
+        "@vue/cli-plugin-babel"         : "^3.4.0",
+        "@vue/cli-plugin-eslint"        : "^3.4.0",
+        "@vue/cli-service"              : "^3.4.0",
+        "axios"                         : "^0.18.0",
+        "babel-eslint"                  : "^10.0.1",
+        "eslint"                        : "^5.8.0",
+        "eslint-plugin-vue"             : "^5.0.0",
+        "foundation-sites"              : "^6.5.3",
+        "jquery"                        : "^3.3.1",
+        "lodash"                        : "^4.17.11",
+        "micromodal"                    : "^0.3.2",
+        "node-sass"                     : "^4.11.0",
+        "sass-loader"                   : "^7.1.0",
+        "vue-template-compiler"         : "^2.6.9"
+    },
+    "eslintConfig"    : {
+        "root"          : true,
+        "env"           : {
+            "node" : true
+        },
+        "extends"       : [
+            "plugin:vue/essential",
+            "eslint:recommended"
+        ],
+        "rules"         : {},
+        "parserOptions" : {
+            "parser" : "babel-eslint"
+        }
+    },
+    "postcss"         : {
+        "plugins" : {
+            "autoprefixer" : {}
+        }
+    },
+    "browserslist"    : [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ]
 }

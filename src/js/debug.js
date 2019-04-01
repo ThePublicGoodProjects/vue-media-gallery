@@ -1,4 +1,4 @@
-
+/* eslint-disable no-console */
 let isEnabled = false;
 
 // debugger with message

@@ -6,7 +6,6 @@
 </template>
 
 <script>
-    import Vue from 'vue';
     import Posts from './components/Posts.vue';
     import _ from 'lodash';
 
