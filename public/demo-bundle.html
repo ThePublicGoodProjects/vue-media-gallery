@@ -1,12 +1,15 @@
 <meta charset="utf-8">
 <title>downloadcenter demo</title>
 <script src="https://unpkg.com/vue"></script>
+<script src="https://unpkg.com/foundation-sites"></script>
+
 <script src="./pgpDownloadCenter.umd.js"></script>
 
+<link rel="stylesheet" href="https://unpkg.com/foundation-sites/dist/css/foundation.css">
 <link rel="stylesheet" href="./pgpDownloadCenter.css">
 
 <div id="app">
-  <posts :options="{host: 'http://downloadcenter.publicgoodprojects.lcl', perPage: 2, campaign: 'mental-health-champions'}"></posts>
+  <posts host="http://downloadcenter.publicgoodprojects.lcl" per-page="2" campaign-slug="mental-health-champions"></posts>
 </div>
 
 <script>

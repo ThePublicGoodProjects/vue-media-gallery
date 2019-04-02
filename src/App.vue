@@ -1,36 +1,16 @@
 <template>
-    <div id="mhcDownloadGallery">
-        <!--<Posts campaign="mental-health-champions" host="https://downloadcenter.actionminded.org" />-->
-        <Posts :options="data"/>
+    <div>
+        <posts request-url="http://downloadcenter.publicgoodprojects.lcl" :per-page="4" campaign-slug="mental-health-champions"></posts>
     </div>
 </template>
 
 <script>
-    import Vue from 'vue';
     import Posts from './components/Posts.vue';
 
-    let defaults = {
-        host         : 'https://downloadcenter.actionminded.org',
-        perPage      : 10,
-        enableOptions: true,
-        campaign     : 'mental-health-champions',
-    };
-
     export default {
-        name      : 'mhcDownloadGallery',
+        name      : 'pgpMediaGallery',
         components: {
             Posts
-        },
-        props     : {
-            options: Object
-        },
-        data() {
-            let data = _.extend({}, defaults, this.options);
-            return {
-                data: data
-            };
-        },
-        mounted() {
         }
     };
 </script>

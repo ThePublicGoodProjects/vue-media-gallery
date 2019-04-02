@@ -86,7 +86,7 @@
                 type   : Boolean,
                 default: false
             },
-            host       : {
+            requestUrl       : {
                 type   : String,
                 default: ''
             }
@@ -103,7 +103,7 @@
         },
         computed  : {
             downloadUrl   : function () {
-                return this.host + (this.post.url ? this.post.url : '/download/' + this.post.file);
+                return this.requestUrl + (this.post.url ? this.post.url : '/download/' + this.post.file);
             },
             thumbStyle    : function () {
                 return 'background-image: url(' + this.post.thumbnail_path + ')';

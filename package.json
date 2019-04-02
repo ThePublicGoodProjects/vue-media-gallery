@@ -1,15 +1,16 @@
 {
-    "name"            : "@cam.wiley/pgp-downloadcenter",
-    "version"         : "0.1.1",
-    "main"            : "dist/pgpDownloadCenter.umd.js",
-    "module"          : "dist/pgpDownloadCenter.common.js",
-    "unpkg"           : "dist/pgpDownloadCenter.umd.js",
+    "name"            : "@pgp/vue-media-gallery",
+    "version"         : "0.0.1",
+    "description"     : "A simple component to display media gallery assests for The Public Good Projects",
+    "main"            : "dist/pgpVueMediaGallery.umd.min.js",
+    "module"          : "dist/pgpVueMediaGallery.common.js",
+    "unpkg"           : "dist/pgpDownloadCenter.umd.min.js",
+    "author"          : "Cameron Wiley <cam.wiley@publicgoodprojects.org> https://publicgoodprojects.org",
+    "license"         : "MIT",
     "scripts"         : {
         "serve"        : "vue-cli-service serve",
         "build"        : "vue-cli-service build",
-        "build-bundle" : "vue-cli-service build --target lib --name pgpDownloadCenter ./src/index.js",
-        "build-lib"    : "vue-cli-service build --target lib --name pgpDownloadCenter ./src/App.vue",
-        "build-web"    : "vue-cli-service build --target lib --name posts ./src/components/Posts.vue",
+        "build-bundle" : "vue-cli-service build --target lib --name pgpVueMediaGallery ./src/index.js",
         "lint"         : "vue-cli-service lint"
     },
     "files"           : [
@@ -39,6 +40,10 @@
         "sass-loader"                   : "^7.1.0",
         "vue-template-compiler"         : "^2.6.9"
     },
+    "repository"      : {
+        "type" : "git",
+        "url"  : "https://github.com/ThePublicGoodProjects/vue-media-gallery.git"
+    },
     "eslintConfig"    : {
         "root"          : true,
         "env"           : {
@@ -58,6 +63,7 @@
             "autoprefixer" : {}
         }
     },
+
     "browserslist"    : [
         "> 1%",
         "last 2 versions",

@@ -1,7 +1,7 @@
 <template>
     <div class="posts" v-if="loaded">
         <div>
-            <div v-if="showOptions" class="post-options margin-bottom-1">
+            <div v-if="enableFilters" class="post-options margin-bottom-1">
                 <div class="callout radius primary">
                     <div class="margin-bottom-1">
                         <ul class="menu align-left">
@@ -70,7 +70,7 @@
                     <div class="cell post-card" v-for="post in posts" :key="post.id">
                         <post :mode="viewMode" :is-checked="isPostSelected(post.id)" @checked="checked" @selectTag="selectTag" @showModal="showModal" @download="download"
                               :enabledTags="enabledTags"
-                              :post="post" :host="options.host"></post>
+                              :post="post" :requestUrl="requestUrl"></post>
                     </div>
                 </div>
                 <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage" :changePage="changePage" :settings="pagination"></pagination>
@@ -130,12 +130,25 @@
             CopyToClipboard
         },
         props     : {
-            options: {
-                type   : Object,
-                default: function () {
-                    return {};
-                }
+            requestUrl : {
+                type    : String,
+                required: true
+            },
+            perPage      : {
+                type   : Number,
+                default: 10
+            },
+            enableFilters: {
+                type   : Boolean,
+                default: false
+            },
+            campaignSlug : {
+                type: String
+            },
+            clientId     : {
+                type: Number
             }
+
         },
         data() {
             return {
@@ -155,7 +168,7 @@
                     category: '',
                     type    : '',
                     pageNum : 1,
-                    perPage : this.options.perPage || 10
+                    perPage: this.perPage
                 },
                 downloadCategory: 'download',
                 downloadAction  : location.pathname,
@@ -165,12 +178,10 @@
                 tags            : [],
                 enabledTags     : [],
                 selectedPosts   : [],
-                showOptions     : (!this.options.enableOptions || this.options.enableOptions === 'false') ? false : true,
                 types           : [],
                 categories      : [],
                 modal           : {},
                 viewMode        : 'grid',
-                showDetails     : (!this.options.details || this.options.details === 'false') ? false : true,
                 loaded          : false,
             };
         },
@@ -179,10 +190,10 @@
         mounted() {
             let url;
             this.params = {};
-            if (this.options.campaign) {
-                this.url = this.options.host + '/api/campaigns/' + this.options.campaign;
-            } else if (this.options.clientId) {
-                this.url = this.options.host + '/api/assets/' + this.options.clientId;
+            if (this.campaignSlug) {
+                this.url = this.requestUrl + '/api/campaigns/' + this.campaignSlug;
+            } else if (this.clientId) {
+                this.url = this.requestUrl + '/api/assets/' + this.clientId;
             }
 
             let hashVals = HashParams.parse();
@@ -204,9 +215,8 @@
                 this.data.orderBy = hashVals.orderBy === 'asc' ? 'old' : 'new';
             }
 
-
             if (hashVals.perPage) {
-                this.data.perPage = hashVals.perPage;
+                this.perPage = hashVals.perPage;
             }
 
             this.loadUrl(this.url, hashVals);
@@ -302,7 +312,7 @@
                 this.params.tags = newValue;
                 this.loadUrl(this.params);
             },
-            'data.perPage' : function (newValue) {
+            'perPage'      : function (newValue) {
                 this.params.perPage = newValue;
                 this.loadUrl(this.params);
             },
@@ -321,9 +331,8 @@
                     url    = this.url.replace(/page=[\d]+&?/, '');
                 }
 
-                params = params || {};
-
-                params.perPage = this.data.perPage;
+                params         = params || {};
+                params.perPage = this.perPage;
 
                 if (/\?/.test(url)) {
                     window.location.hash = url.split('?')[1];
@@ -347,7 +356,7 @@
                 });
             },
             downloadUrl: function (post) {
-                return this.options.host + (post.url ? post.url : '/download/' + post.file);
+                return this.requestUrl + (post.url ? post.url : '/download/' + post.file);
             },
             download   : function (post) {
                 // gtmEvents.log(this.downloadCategory, this.downloadAction, post.url ? post.url : post.file);
@@ -439,7 +448,7 @@
                 });
             },
             downloadSelectedPosts: function () {
-                window.location = this.options.host + '/download-batch?d=' + this.selectedPosts.join(',');
+                window.location = this.requestUrl + '/download-batch?d=' + this.selectedPosts.join(',');
                 this.deselectAllPosts();
             },
             firstPage            : function () {

@@ -61,8 +61,8 @@
     &,
     p,
     p span {
-        font-size: $global-font-size !important;
-        font-family: $body-font-family !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
     }
 
 }
