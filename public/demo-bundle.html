@@ -1,22 +1,22 @@
 <meta charset="utf-8">
 <title>downloadcenter demo</title>
 <script src="https://unpkg.com/vue"></script>
-<script src="https://unpkg.com/foundation-sites"></script>
+<!--<script src="https://unpkg.com/foundation-sites"></script>-->
 
-<script src="./pgpDownloadCenter.umd.js"></script>
+<script src="./pgpVueMediaGallery.umd.js"></script>
 
-<link rel="stylesheet" href="https://unpkg.com/foundation-sites/dist/css/foundation.css">
-<link rel="stylesheet" href="./pgpDownloadCenter.css">
+<!--<link rel="stylesheet" href="https://unpkg.com/foundation-sites/dist/css/foundation.css">-->
+<link rel="stylesheet" href="./pgpVueMediaGallery.css">
 
 <div id="app">
-  <posts host="http://downloadcenter.publicgoodprojects.lcl" per-page="2" campaign-slug="mental-health-champions"></posts>
+  <posts request-url="http://downloadcenter.publicgoodprojects.lcl" :per-page="2" campaign-slug="mental-health-champions"></posts>
 </div>
 
 <script>
   new Vue({
     el        : '#app',
     components: {
-      posts: pgpDownloadCenter.Posts
+      posts: pgpVueMediaGallery.Posts
     }
   });
 </script>
