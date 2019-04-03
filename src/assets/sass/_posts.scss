@@ -39,6 +39,7 @@ $download-button-color: #6b6b6b;
     }
 
     .button-download {
+        width: auto;
         background-color: $download-button-bg;
         color: $download-button-color;
 
@@ -93,6 +94,7 @@ $download-button-color: #6b6b6b;
         //position: absolute;
         //right: 1rem;
         margin-top: 1rem;
+        width: auto;
 
         > * {
             margin-right: 5px;

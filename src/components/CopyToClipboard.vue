@@ -83,6 +83,10 @@
         color: #6b6b6b;
         border: 1px solid #ccc;
 
+        i {
+            margin: 0;
+        }
+
         .tooltip-text {
             visibility: hidden;
             font-size: 14px;
