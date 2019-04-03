@@ -4,7 +4,7 @@
     "description": "A simple component to display media gallery assests for The Public Good Projects",
     "main": "dist/pgpVueMediaGallery.umd.min.js",
     "module": "dist/pgpVueMediaGallery.common.js",
-    "unpkg": "dist/pgpDownloadCenter.umd.min.js",
+    "unpkg": "dist/pgpVueMediaGallery.umd.min.js",
     "author": "Cameron Wiley <cam.wiley@publicgoodprojects.org> https://publicgoodprojects.org",
     "license": "MIT",
     "scripts": {
