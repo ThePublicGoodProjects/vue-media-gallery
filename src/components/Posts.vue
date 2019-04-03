@@ -110,17 +110,15 @@
 
 <script>
     /* eslint-disable no-unused-vars */
-    const axios      = require('axios'),
-          MicroModal = require('micromodal').default,
-          $          = require('jquery'),
-          _          = require('lodash');
-    // hashParams = require('../js/hash-params.js');
-    // gtmEvents  = require('../gtm-events.js');
 
+    import $ from 'jquery';
+    import axios from 'axios';
+    import MicroModal from 'micromodal';
     import * as HashParams from '../js/hash-params';
     import CopyToClipboard from './CopyToClipboard';
     import Post from './Post';
     import Pagination from './Pagination';
+    import _ from 'lodash';
 
     export default {
         name      : "Posts",
@@ -216,7 +214,7 @@
             }
 
             if (hashVals.perPage) {
-                this.perPage = hashVals.perPage;
+                this.data.perPage = hashVals.perPage;
             }
 
             this.loadUrl(this.url, hashVals);
@@ -312,7 +310,7 @@
                 this.params.tags = newValue;
                 this.loadUrl(this.params);
             },
-            'perPage'      : function (newValue) {
+            'data.perPage'      : function (newValue) {
                 this.params.perPage = newValue;
                 this.loadUrl(this.params);
             },
@@ -332,7 +330,7 @@
                 }
 
                 params         = params || {};
-                params.perPage = this.perPage;
+                params.perPage = this.data.perPage;
 
                 if (/\?/.test(url)) {
                     window.location.hash = url.split('?')[1];

@@ -11,6 +11,9 @@
                           v-for="tag in post.tag_names" :key="tag">{{tag}}</span>
                 </p>
                 <p v-html="filterTeaser(post.body)" @click="showModal()"></p>
+                <div v-if="hasClipboard">
+                    <copy-to-clipboard :content="post.clipboard"></copy-to-clipboard>
+                </div>
                 <div class="list-item-download">
                     <a v-if="enableFacebook" href="" class="button radius button-facebook" @click.prevent="shareFacebook()">
                         <i class="fab fa-facebook-f"></i>
@@ -43,6 +46,9 @@
                                   v-for="tag in post.tag_names" :key="tag">{{tag}}</span>
                     </p>
                     <p v-if="hasBody" v-html="post.body" class="details-body" @click="showModal()"></p>
+                    <div v-if="hasClipboard">
+                        <copy-to-clipboard :content="post.clipboard"></copy-to-clipboard>
+                    </div>
                 </div>
             </div>
             <div class="list-item-download">
@@ -63,14 +69,15 @@
 
 <script>
     /* eslint-disable no-unused-vars, no-undef */
-    const isDevelopment = process.env.NODE_ENV === 'development',
-          $             = require('jquery'),
-          _             = require('lodash'),
-          debug         = require('../js/debug')(isDevelopment);
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    import CopyToClipboard from './CopyToClipboard';
+    import $ from 'jquery';
 
     export default {
         name      : "PostItem",
-        components: {},
+        components: {
+            CopyToClipboard
+        },
         props     : {
             mode       : {
                 type   : String,
@@ -119,6 +126,9 @@
             },
             hasBody       : function () {
                 return this.post.body && this.post.body.length;
+            },
+            hasClipboard: function () {
+                return this.post.clipboard && this.post.clipboard.length;
             },
             fileType      : function () {
                 return this.post.file_type;
