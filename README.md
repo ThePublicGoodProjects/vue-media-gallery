@@ -61,8 +61,8 @@ Vue.component('posts', PgpVueMediaGallery.Posts)
 | ----------------- | :--- | :--- | :--- |
 | `request-url`      | `String` |  Origin URL the request to the PGP Download Center host environment. | `https://downloadcenter.publicgoodprojects.org` |
 | `per-page`      | `Number` | Number of items to return per page.| `10` |
-| `enable-filters`      | `Boolean` | Display filtering options.|`false` |
 | `campaign-slug`      | `String` | Campaign slug name to select the campaign-specific assets.| `''` |
 | `client-id`      | `String` | Client id to select the client-specific assets.| `''` |
+| `enable-filters`      | `Boolean` | Display filtering options.|`false` |
 
 

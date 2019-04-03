@@ -1,7 +1,8 @@
 <template>
     <div class="posts" v-if="loaded">
-        <div>
-            <div v-if="enableFilters" class="post-options margin-bottom-1">
+        <div class="post-content">
+            <slot name="header" :title="pageName"></slot>
+            <div v-if="enableFilters" class="post-options">
                 <div class="callout radius primary">
                     <div class="margin-bottom-1">
                         <ul class="menu align-left">
@@ -136,15 +137,15 @@
                 type   : Number,
                 default: 10
             },
-            enableFilters: {
-                type   : Boolean,
-                default: false
-            },
             campaignSlug : {
                 type: String
             },
             clientId     : {
                 type: Number
+            },
+            enableFilters: {
+                type   : Boolean,
+                default: false
             }
 
         },
@@ -227,7 +228,7 @@
                 return !!this.campaignData;
             },
             pageName        : function () {
-                return this.isCampaign ? this.campaignData.name : 'Partner Content';
+                return this.campaignData.name || '';
             },
             hasPosts        : function () {
                 return this.posts && this.posts.length > 0;
@@ -312,7 +313,7 @@
             },
             'data.perPage'      : function (newValue) {
                 this.params.perPage = newValue;
-                this.loadUrl(this.params);
+                // this.loadUrl(this.params);
             },
             viewMode       : function (newValue) {
                 location.hash = 'viewMode=' + newValue;
@@ -500,4 +501,7 @@
 
 <style lang="scss">
     @import '../assets/sass/app.scss';
+    .post-content {
+        margin-bottom: 1rem;
+    }
 </style>
