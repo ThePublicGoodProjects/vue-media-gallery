@@ -1,6 +1,6 @@
 <template>
     <div>
-        <posts request-url="http://downloadcenter.publicgoodprojects.lcl" :per-page="4" campaign-slug="mental-health-champions"></posts>
+        <posts :per-page="4" campaign-slug="mental-health-champions"></posts>
     </div>
 </template>
 

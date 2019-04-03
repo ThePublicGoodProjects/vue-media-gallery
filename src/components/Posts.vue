@@ -132,7 +132,7 @@
         props     : {
             requestUrl : {
                 type    : String,
-                required: true
+                default: 'https://downloadcenter.publicgoodprojects.org'
             },
             perPage      : {
                 type   : Number,

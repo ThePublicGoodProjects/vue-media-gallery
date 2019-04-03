@@ -9,7 +9,6 @@
 </template>
 
 <script>
-    // const copyToClipboard = require('../copy-to-clipboard');
     const $ = require('jquery');
 
     export default {
