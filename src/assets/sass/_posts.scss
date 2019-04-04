@@ -63,6 +63,15 @@ $download-button-color: #6b6b6b;
             height: auto;
             text-align: center;
         }
+
+        li {
+            display:inline-block;
+        }
+    }
+
+    .pagination-previous,
+    .pagination-next {
+        display: inline-block;
     }
 
     .pagination-first {
