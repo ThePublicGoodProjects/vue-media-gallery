@@ -27,6 +27,19 @@ import {Posts} from '@pgp/vue-media-gallery'
 Vue.component('posts', Posts)
 ```
 
+- Browser
+```js
+new Vue({
+    el        : '#app',                 // Vue app element
+    components: {
+        posts: pgpVueMediaGallery.Posts // Global component loaded from unpkg.com CDN
+    }
+});
+
+
+```
+
+
 ### CDN
 
 Include the source file.
@@ -42,9 +55,7 @@ Include the source file.
 ### In Vue Template
 ```html
 <posts
-    request-url="https://downloadcenter.publicgoodprojects.org"
-    per-page="20"
-    campaign="nj-sugarfreed">
+    campaign-slug="nj-sugarfreed">
 </posts>
 ```
 
@@ -60,9 +71,9 @@ Vue.component('posts', PgpVueMediaGallery.Posts)
 | Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Type | Description | Default |
 | ----------------- | :--- | :--- | :--- |
 | `request-url`      | `String` |  Origin URL the request to the PGP Download Center host environment. | `https://downloadcenter.publicgoodprojects.org` |
-| `per-page`      | `Number` | Number of items to return per page.| `10` |
+| `:per-page`      | `Number` | Number of items to return per page.| `10` |
 | `campaign-slug`      | `String` | Campaign slug name to select the campaign-specific assets.| `''` |
 | `client-id`      | `String` | Client id to select the client-specific assets.| `''` |
-| `enable-filters`      | `Boolean` | Display filtering options.|`false` |
+| `:enable-filters`      | `Boolean` | Display filtering options.|`false` |
 
 

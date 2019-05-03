@@ -20,25 +20,23 @@
         "*.json",
         "*.js"
     ],
-    "dependencies": {
-        "vue": "^2.6.9"
-    },
+    "dependencies": {},
     "devDependencies": {
-        "@fortawesome/fontawesome-free": "^5.7.1",
-        "@vue/cli-plugin-babel": "^3.4.0",
-        "@vue/cli-plugin-eslint": "^3.4.0",
-        "@vue/cli-service": "^3.4.0",
+        "@fortawesome/fontawesome-free": "^5.8.1",
+        "@vue/cli-plugin-babel": "^3.7.0",
+        "@vue/cli-service": "^3.7.0",
         "axios": "^0.18.0",
         "babel-eslint": "^10.0.1",
-        "eslint": "^5.8.0",
-        "eslint-plugin-vue": "^5.0.0",
+        "eslint": "^5.16.0",
+        "eslint-plugin-vue": "^5.2.2",
         "foundation-sites": "^6.5.3",
-        "jquery": "^3.3.1",
+        "jquery": "^3.4.1",
         "lodash": "^4.17.11",
         "micromodal": "^0.3.2",
-        "node-sass": "^4.11.0",
+        "node-sass": "^4.12.0",
         "sass-loader": "^7.1.0",
-        "vue-template-compiler": "^2.6.9"
+        "vue": "^2.6.10",
+        "vue-template-compiler": "^2.6.10"
     },
     "repository": {
         "type": "git",
