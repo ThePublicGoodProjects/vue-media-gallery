@@ -198,7 +198,8 @@
         created() {
         },
         mounted() {
-            let url;
+            let url,
+                skipLoad;
             this.params = {};
             if (this.campaignSlug) {
                 this.url = this.requestUrl + '/api/campaigns/' + this.campaignSlug;
@@ -212,24 +213,35 @@
                 this.viewMode = hashVals.viewMode;
             }
 
-            if (hashVals.category || this.category) {
-                this.data.category = hashVals.category || this.category;
+
+            if (hashVals.category) {
+                this.data.category = hashVals.category;
+                skipLoad = true;
             }
             if (hashVals.tags) {
                 this.enabledTags = hashVals.tags;
             }
             if (hashVals.file_type) {
                 this.data.type = hashVals.file_type;
+                skipLoad = true;
             }
             if (hashVals.order) {
                 this.data.orderBy = hashVals.orderBy === 'asc' ? 'old' : 'new';
+                skipLoad = true;
+
             }
 
             if (hashVals.perPage) {
                 this.data.perPage = hashVals.perPage;
             }
 
-            this.loadUrl(this.url, hashVals);
+            if (this.category) {
+                hashVals.category = this.category;
+            }
+
+            if (! skipLoad) {
+                this.loadUrl(this.url, hashVals);
+            }
         },
         computed  : {
             paginate        : function () {
