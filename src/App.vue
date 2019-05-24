@@ -1,7 +1,7 @@
 <template>
     <div>
         <posts request-url="https://downloadcenter.publicgoodprojects.org"
-                :per-page="4" :enable-filters="true" campaign-slug="healthier-future-wo">
+                :per-page="4" :enable-filters="true" :enable-categories="false" campaign-slug="healthier-future-wo">
             <template v-slot:header="slotData">
                 <h2 class="title">{{slotData.title}}</h2>
             </template>

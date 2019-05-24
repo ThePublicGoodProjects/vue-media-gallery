@@ -8,7 +8,7 @@
                     <div class="callout radius primary">
                         <div class="margin-bottom-1">
                             <ul class="menu align-left">
-                                <li v-if="hasCategories">
+                                <li v-if="hasCategories && enableCategories">
                                     <div>
                                         <label for="category">Category</label>
                                     </div>
@@ -149,7 +149,12 @@
             enableFilters: {
                 type   : Boolean,
                 default: false
+            },
+            enableCategories: {
+                type: Boolean,
+                default: true
             }
+
 
         },
         data() {
