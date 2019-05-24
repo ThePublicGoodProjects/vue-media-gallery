@@ -1,6 +1,6 @@
 <template>
     <div>
-        <posts request-url="https://downloadcenter.publicgoodprojects.org"
+        <posts request-url="https://downloadcenter.publicgoodprojects.org" category="cessation"
                 :per-page="4" :enable-filters="true" :enable-categories="false" campaign-slug="healthier-future-wo">
             <template v-slot:header="slotData">
                 <h2 class="title">{{slotData.title}}</h2>

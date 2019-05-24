@@ -146,6 +146,9 @@
             clientId     : {
                 type: Number
             },
+            category: {
+                type: String
+            },
             enableFilters: {
                 type   : Boolean,
                 default: false
@@ -209,8 +212,8 @@
                 this.viewMode = hashVals.viewMode;
             }
 
-            if (hashVals.category) {
-                this.data.category = hashVals.category;
+            if (hashVals.category || this.category) {
+                this.data.category = hashVals.category || this.category;
             }
             if (hashVals.tags) {
                 this.enabledTags = hashVals.tags;
