@@ -214,6 +214,10 @@
             }
 
 
+            if (this.category) {
+                hashVals.category = this.category;
+            }
+
             if (hashVals.category) {
                 this.data.category = hashVals.category;
                 skipLoad = true;
@@ -235,9 +239,7 @@
                 this.data.perPage = hashVals.perPage;
             }
 
-            if (this.category) {
-                hashVals.category = this.category;
-            }
+
 
             if (! skipLoad) {
                 this.loadUrl(this.url, hashVals);
