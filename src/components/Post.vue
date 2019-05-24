@@ -5,13 +5,13 @@
                 <div class="thumbnail" :style="thumbStyle"></div>
             </div>
             <div class="media-object-section text">
-                <h4 class="cursor-pointer" @click="showModal()">{{ post.title }}</h4>
-                <p>
+                <h4 class="cursor-pointer post-title" @click="showModal()">{{ post.title }}</h4>
+                <p class="post-tags">
                     <span @click="selectTag(tag)" :class="isSelected(tag) ? 'selected' : ''" class="cursor-pointer label secondary rounded"
                           v-for="tag in post.tag_names" :key="tag">{{tag}}</span>
                 </p>
-                <p v-html="filterTeaser(post.body)" @click="showModal()"></p>
-                <div v-if="hasClipboard">
+                <p class="post-teaser" v-html="filterTeaser(post.body)" @click="showModal()"></p>
+                <div class="post-clipboard" v-if="hasClipboard">
                     <copy-to-clipboard :content="post.clipboard"></copy-to-clipboard>
                 </div>
                 <div class="list-item-download">
