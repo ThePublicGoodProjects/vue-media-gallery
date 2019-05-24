@@ -1,6 +1,7 @@
 <template>
     <div>
-        <posts :per-page="4" campaign-slug="mental-health-champions">
+        <posts request-url="https://downloadcenter.publicgoodprojects.org"
+                :per-page="4" :enable-filters="true" campaign-slug="healthier-future-wo">
             <template v-slot:header="slotData">
                 <h2 class="title">{{slotData.title}}</h2>
             </template>

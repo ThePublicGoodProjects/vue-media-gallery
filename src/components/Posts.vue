@@ -1,107 +1,110 @@
 <template>
-    <div class="posts" v-if="loaded">
-        <div class="post-content">
-            <slot name="header" :title="pageName"></slot>
-            <div v-if="enableFilters" class="post-options">
-                <div class="callout radius primary">
-                    <div class="margin-bottom-1">
-                        <ul class="menu align-left">
-                            <li v-if="hasCategories">
-                                <div>
-                                    <label for="category">Category</label>
-                                </div>
-                                <select v-model="data.category" name="category" id="category">
-                                    <option value="">All</option>
-                                    <option :value="category.slug" v-for="category in categories" :key="category.id">{{ category.name }}</option>
-                                </select>
-                            </li>
-                            <li v-if="hasTypes">
-                                <div>
-                                    <label for="type">File Type</label>
-                                </div>
-                                <select v-model="data.type" name="type" id="type">
-                                    <option value="">All</option>
-                                    <option :value="type" v-for="type in types" :key="type">{{ type }}</option>
-                                </select>
-                            </li>
-                            <li>
-                                <div>
-                                    <label for="orderBy">Order By</label>
-                                </div>
-                                <select v-model="data.orderBy" name="orderBy" id="orderBy">
-                                    <option :value="option.value" v-for="option in orderOptions" :key="option.id">{{ option.eng }}</option>
-                                </select>
-                            </li>
-                        </ul>
+    <div class="vue-media-gallery">
+
+        <div class="posts" v-if="loaded">
+            <div class="post-content">
+                <slot name="header" :title="pageName"></slot>
+                <div v-if="enableFilters" class="post-options">
+                    <div class="callout radius primary">
+                        <div class="margin-bottom-1">
+                            <ul class="menu align-left">
+                                <li v-if="hasCategories">
+                                    <div>
+                                        <label for="category">Category</label>
+                                    </div>
+                                    <select v-model="data.category" name="category" id="category">
+                                        <option value="">All</option>
+                                        <option :value="category.slug" v-for="category in categories" :key="category.id">{{ category.name }}</option>
+                                    </select>
+                                </li>
+                                <li v-if="hasTypes">
+                                    <div>
+                                        <label for="type">File Type</label>
+                                    </div>
+                                    <select v-model="data.type" name="type" id="type">
+                                        <option value="">All</option>
+                                        <option :value="type" v-for="type in types" :key="type">{{ type }}</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <div>
+                                        <label for="orderBy">Order By</label>
+                                    </div>
+                                    <select v-model="data.orderBy" name="orderBy" id="orderBy">
+                                        <option :value="option.value" v-for="option in orderOptions" :key="option.id">{{ option.eng }}</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="tags.length > 0">
+                            <label>Tags:</label>
+                            <div class="button-group small">
+                                <button type="button" v-for="tag in tags" @click="selectTag(tag)" :key="tag" :class="isTagSelected(tag) ? 'selected' : ''"
+                                        class="label rounded secondary">{{ tag
+                                    }}
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <div v-if="tags.length > 0">
-                        <label>Tags:</label>
-                        <div class="button-group small">
-                            <button type="button" v-for="tag in tags" @click="selectTag(tag)" :key="tag" :class="isTagSelected(tag) ? 'selected' : ''"
-                                    class="label rounded secondary">{{ tag
-                                }}
+                    <div class="flex-container align-right">
+                        <div v-if="listView">
+                            <button v-if="hasSelectedPosts" type="button" title="Download Selected" class="button button-download-selected clear" @click="downloadSelectedPosts">
+                                <i class="fas fa-download"></i> <span class="hide-for-small-only">Download Selected</span>
+                            </button>
+                            <button type="button" class="button clear" @click="selectAllPosts" title="Select All">
+                                <i v-if="allPostsSelected" class="far fa-check-square"></i>
+                                <i v-else class="far fa-square"></i>
+                            </button>
+                        </div>
+                        <div class="view-mode-buttons">
+                            <button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'active' : ''" type="button" title="Gallery View" class="button clear cursor-pointer">
+                                <i class="fas fa-th"></i>
+                            </button>
+                            <button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'active' : ''" type="button" title="List View" class="button clear">
+                                <i class="fas fa-th-list"></i>
                             </button>
                         </div>
                     </div>
+                    <div class="text-right margin-right-1">Total: {{ pagination.total}}</div>
                 </div>
-                <div class="flex-container align-right">
-                    <div v-if="listView">
-                        <button v-if="hasSelectedPosts" type="button" title="Download Selected" class="button button-download-selected clear" @click="downloadSelectedPosts">
-                            <i class="fas fa-download"></i> <span class="hide-for-small-only">Download Selected</span>
-                        </button>
-                        <button type="button" class="button clear" @click="selectAllPosts" title="Select All">
-                            <i v-if="allPostsSelected" class="far fa-check-square"></i>
-                            <i v-else class="far fa-square"></i>
-                        </button>
-                    </div>
-                    <div class="view-mode-buttons">
-                        <button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'active' : ''" type="button" title="Gallery View" class="button clear cursor-pointer">
-                            <i class="fas fa-th"></i>
-                        </button>
-                        <button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'active' : ''" type="button" title="List View" class="button clear">
-                            <i class="fas fa-th-list"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="text-right margin-right-1">Total: {{ pagination.total}}</div>
-            </div>
-            <div class="post-results margin-bottom-3">
-                <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage" :changePage="changePage" :settings="pagination"></pagination>
-                <div class="grid-x grid-padding-x" :class="viewModeClass" v-if="hasPosts">
-                    <div class="cell post-card" v-for="post in posts" :key="post.id">
-                        <post :mode="viewMode" :is-checked="isPostSelected(post.id)" @checked="checked" @selectTag="selectTag" @showModal="showModal" @download="download"
-                              :enabledTags="enabledTags"
-                              :post="post" :requestUrl="requestUrl"></post>
-                    </div>
-                </div>
-                <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage" :changePage="changePage" :settings="pagination"></pagination>
-            </div>
-        </div>
-        <div class="modal posts-modal micromodal-slide" id="posts-modal" aria-hidden="true">
-            <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-                <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="posts-modal-title">
-                    <div class="flex-container align-right">
-                        <button class="button clear modal-close" data-micromodal-close aria-label="Close this dialog window"><i class="fas fa-times" data-micromodal-close></i>
-                        </button>
-                    </div>
-                    <main class="modal__content" id="posts-modal-content">
-                        <div class="text-center">
-                            <video v-if="modal.file_type === 'video' && modal.type === 'url'" controls>
-                                <source :src="videoSrc(modal.url)">
-                            </video>
-                            <video v-else-if="modal.file_type === 'video'" controls>
-                                <source :src="modal.file_path">
-                            </video>
-                            <img v-else :src="modal.image" alt="">
+                <div class="post-results margin-bottom-3">
+                    <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage" :changePage="changePage" :settings="pagination"></pagination>
+                    <div class="grid-x grid-padding-x" :class="viewModeClass" v-if="hasPosts">
+                        <div class="cell post-card" v-for="post in posts" :key="post.id">
+                            <post :mode="viewMode" :is-checked="isPostSelected(post.id)" @checked="checked" @selectTag="selectTag" @showModal="showModal" @download="download"
+                                  :enabledTags="enabledTags"
+                                  :post="post" :requestUrl="requestUrl"></post>
                         </div>
-                        <div class="modal__title text-center" v-if="modal.title">{{ modal.title }}</div>
-                        <div class="modal__body" v-if="modal.body" v-html="modal.body"></div>
-                    </main>
-                    <div class="text-center" v-if="modal.clipboard">
-                        <copy-to-clipboard :content="modal.clipboard"></copy-to-clipboard>
                     </div>
-                    <div class="text-center margin-top-1">
-                        <a @click="download(modal)" class="button" :href="downloadUrl(modal)">Download</a>
+                    <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage" :changePage="changePage" :settings="pagination"></pagination>
+                </div>
+            </div>
+            <div class="modal posts-modal micromodal-slide" id="posts-modal" aria-hidden="true">
+                <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+                    <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="posts-modal-title">
+                        <div class="flex-container align-right">
+                            <button class="button clear modal-close" data-micromodal-close aria-label="Close this dialog window"><i class="fas fa-times" data-micromodal-close></i>
+                            </button>
+                        </div>
+                        <main class="modal__content" id="posts-modal-content">
+                            <div class="text-center">
+                                <video v-if="modal.file_type === 'video' && modal.type === 'url'" controls>
+                                    <source :src="videoSrc(modal.url)">
+                                </video>
+                                <video v-else-if="modal.file_type === 'video'" controls>
+                                    <source :src="modal.file_path">
+                                </video>
+                                <img v-else :src="modal.image" alt="">
+                            </div>
+                            <div class="modal__title text-center" v-if="modal.title">{{ modal.title }}</div>
+                            <div class="modal__body" v-if="modal.body" v-html="modal.body"></div>
+                        </main>
+                        <div class="text-center" v-if="modal.clipboard">
+                            <copy-to-clipboard :content="modal.clipboard"></copy-to-clipboard>
+                        </div>
+                        <div class="text-center margin-top-1">
+                            <a @click="download(modal)" class="button" :href="downloadUrl(modal)">Download</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -129,8 +132,8 @@
             CopyToClipboard
         },
         props     : {
-            requestUrl : {
-                type    : String,
+            requestUrl   : {
+                type   : String,
                 default: 'https://downloadcenter.publicgoodprojects.org'
             },
             perPage      : {
@@ -167,7 +170,7 @@
                     category: '',
                     type    : '',
                     pageNum : 1,
-                    perPage: this.perPage
+                    perPage : this.perPage
                 },
                 downloadCategory: 'download',
                 downloadAction  : location.pathname,
@@ -311,7 +314,7 @@
                 this.params.tags = newValue;
                 this.loadUrl(this.params);
             },
-            'data.perPage'      : function (newValue) {
+            'data.perPage' : function (newValue) {
                 this.params.perPage = newValue;
                 // this.loadUrl(this.params);
             },
@@ -351,7 +354,6 @@
                     vm.types        = data.types || [];
                     vm.loaded       = true;
                     vm.data.pageNum = vm.pagination.current_page;
-
                 });
             },
             downloadUrl: function (post) {
@@ -501,6 +503,7 @@
 
 <style lang="scss">
     @import '../assets/sass/app.scss';
+
     .post-content {
         margin-bottom: 1rem;
     }

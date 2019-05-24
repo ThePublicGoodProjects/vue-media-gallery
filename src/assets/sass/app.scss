@@ -2,5 +2,7 @@
 @import "settings";
 @import '~foundation-sites/scss/foundation';
 @include foundation-everything(true, true);
-@import "modal";
-@import "posts";
+.vue-media-gallery {
+    @import "modal";
+    @import "posts";
+}
