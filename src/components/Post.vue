@@ -113,7 +113,8 @@
                 return this.requestUrl + (this.post.url ? this.post.url : '/download/' + this.post.file);
             },
             thumbStyle    : function () {
-                return 'background-image: url(' + this.post.thumbnail_path + ')';
+                let path = this.post.thumbnail_path || this.post.file_path;
+                return 'background-image: url(' + path + ')';
             },
             isVideo       : function () {
                 return this.post.file_type === 'video';
