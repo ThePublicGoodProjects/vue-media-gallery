@@ -69,6 +69,12 @@ $download-button-color: #6b6b6b;
         }
     }
 
+    .button {
+        i {
+            padding: 0 .25rem;
+        }
+    }
+
     .pagination-previous,
     .pagination-next {
         display: inline-block;
