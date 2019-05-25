@@ -1,6 +1,6 @@
 {
     "name": "@pgp/vue-media-gallery",
-    "version": "0.0.15",
+    "version": "0.0.16",
     "description": "A simple component to display media gallery assests for The Public Good Projects",
     "main": "dist/pgpVueMediaGallery.umd.min.js",
     "module": "dist/pgpVueMediaGallery.common.js",
