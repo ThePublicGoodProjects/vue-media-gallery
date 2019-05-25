@@ -396,7 +396,7 @@
                 let vm = this;
 
                 this.modal       = post;
-                this.modal.image = this.modal.thumbnail_path || this.modal.file_path;
+                this.modal.image = this.modal.file_path.match(/\.gif/) ? this.modal.file_path : (this.modal.thumbnail_path || this.modal.file_path);
                 MicroModal.show('posts-modal', {
                     onClose: function () {
                         vm.modal = {};
