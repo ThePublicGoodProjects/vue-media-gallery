@@ -1,7 +1,7 @@
 <template>
     <div>
-        <posts request-url="https://downloadcenter.publicgoodprojects.org" category="cessation"
-                :per-page="4" :enable-filters="true" campaign-slug="healthier-future-wo">
+        <posts request-url="https://downloadcenter.publicgoodprojects.rocks"
+                :per-page="4" :enable-filters="true" campaign-slug="mental-health-champions" :share-url="'https://share.downloadcenter.actionminded.publicgoodprojects.rocks'" :enable-share="true">
             <template v-slot:header="slotData">
                 <h2 class="title">{{slotData.title}}</h2>
             </template>

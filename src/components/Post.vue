@@ -7,7 +7,8 @@
             <div class="media-object-section text">
                 <h4 class="cursor-pointer post-title" @click="showModal()">{{ post.title }}</h4>
                 <p class="post-tags">
-                    <span @click="selectTag(tag)" :class="isSelected(tag) ? 'selected' : ''" class="cursor-pointer label secondary rounded"
+                    <span @click="selectTag(tag)" :class="isSelected(tag) ? 'selected' : ''"
+                          class="cursor-pointer label secondary rounded"
                           v-for="tag in post.tag_names" :key="tag">{{tag}}</span>
                 </p>
                 <p class="post-teaser" v-html="filterTeaser(post.body)" @click="showModal()"></p>
@@ -15,10 +16,12 @@
                     <copy-to-clipboard :content="post.clipboard"></copy-to-clipboard>
                 </div>
                 <div class="list-item-download">
-                    <a v-if="enableFacebook" href="" class="button radius button-facebook" @click.prevent="shareFacebook()">
+                    <a target="_blank" :href="facebookShareUrl" v-if="facebookShareUrl"
+                       class="button radius button-facebook">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a v-if="enableTwitter" :href="'https://twitter.com/intent/tweet?text=' + post.file_path" class="button radius button-twitter">
+                    <a v-if="twitterShareUrl" target="_blank" :href="twitterShareUrl"
+                       class="button radius button-twitter">
                         <i class="fab fa-twitter"></i>
                     </a>
                     <a class="button button-download radius" @click="download(post)" :href="downloadUrl"
@@ -42,7 +45,8 @@
                         <h4 v-if="hasTitle" class="cursor-pointer" @click="showModal()">{{ post.title }}</h4>
                     </div>
                     <p v-if="hasTags">
-                            <span @click="selectTag(tag)" :class="isSelected(tag) ? 'selected' : ''" class="cursor-pointer label secondary rounded"
+                            <span @click="selectTag(tag)" :class="isSelected(tag) ? 'selected' : ''"
+                                  class="cursor-pointer label secondary rounded"
                                   v-for="tag in post.tag_names" :key="tag">{{tag}}</span>
                     </p>
                     <p v-if="hasBody" v-html="post.body" class="details-body" @click="showModal()"></p>
@@ -52,10 +56,12 @@
                 </div>
             </div>
             <div class="list-item-download">
-                <a v-if="enableFacebook" href="" class="button radius button-facebook" @click.prevent="shareFacebook()">
+                <a target="_blank" :href="facebookShareUrl" v-if="facebookShareUrl"
+                   class="button radius button-facebook">
                     <i class="fab fa-facebook-f"></i>
                 </a>
-                <a v-if="enableTwitter" :href="'https://twitter.com/intent/tweet?text=' + post.file_path" class="button radius button-twitter">
+                <a v-if="twitterShareUrl" target="_blank" :href="twitterShareUrl"
+                   class="button radius button-twitter">
                     <i class="fab fa-twitter"></i>
                 </a>
                 <a class="button button-download radius" @click="download(post)" :href="downloadUrl"
@@ -93,16 +99,33 @@
                 type   : Boolean,
                 default: false
             },
-            requestUrl       : {
+            requestUrl : {
+                type   : String,
+                default: ''
+            },
+            enableShare: {
+                type   : Boolean,
+                default: false
+            },
+            shareUrl   : {
                 type   : String,
                 default: ''
             }
         },
         data() {
-            return {
-                enableFacebook: false,
-                enableTwitter : false
-            };
+            let data = {
+                    twitterShareUrl : '',
+                    facebookShareUrl: ''
+                },
+                shareUrl;
+
+            if (this.enableShare && this.shareUrl.length) {
+                shareUrl = [this.shareUrl, 'assets', this.post.campaign_id, this.post.id].join('/');
+
+                data.facebookShareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl;
+                data.twitterShareUrl = 'https://twitter.com/intent/tweet?url=' + shareUrl;
+            }
+            return data;
         },
         created() {
         },
@@ -128,7 +151,7 @@
             hasBody       : function () {
                 return this.post.body && this.post.body.length;
             },
-            hasClipboard: function () {
+            hasClipboard  : function () {
                 return this.post.clipboard && this.post.clipboard.length;
             },
             fileType      : function () {
@@ -148,7 +171,7 @@
             }
         },
         methods   : {
-            filterTeaser : function (fullText) {
+            filterTeaser: function (fullText) {
                 if (fullText) {
                     let text = $(fullText.replace(/<br>/g, '\n')).text();
                     if (text.length > 140) {
@@ -159,34 +182,13 @@
 
                 return fullText;
             },
-            download     : function (post) {
+            download    : function (post) {
                 this.$emit('download', post);
             },
-            shareFacebook: function () {
-                function shareOverrideOGMeta(overrideLink, overrideTitle, overrideDescription, overrideImage) {
-                    FB.ui({
-                            method           : 'share_open_graph',
-                            action_type      : 'og.likes',
-                            action_properties: JSON.stringify({
-                                object: {
-                                    'og:url'        : overrideLink,
-                                    'og:title'      : overrideTitle,
-                                    'og:description': overrideDescription,
-                                    'og:image'      : overrideImage
-                                }
-                            })
-                        },
-                        function () {
-                            // Action after response
-                        });
-                }
-
-                shareOverrideOGMeta(location.origin, 'Mental Health Champions', this.post.body, this.post.file_path);
-            },
-            selectTag    : function (tag) {
+            selectTag   : function (tag) {
                 this.$emit('selectTag', tag);
             },
-            showModal    : function () {
+            showModal   : function () {
                 this.$emit('showModal', this.post);
             },
             isSelected(name) {

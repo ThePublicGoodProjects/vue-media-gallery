@@ -73,7 +73,7 @@
                         <div class="cell post-card" v-for="post in posts" :key="post.id">
                             <post :mode="viewMode" :is-checked="isPostSelected(post.id)" @checked="checked" @selectTag="selectTag" @showModal="showModal" @download="download"
                                   :enabledTags="enabledTags"
-                                  :post="post" :requestUrl="requestUrl"></post>
+                                  :post="post" :requestUrl="requestUrl" :enable-share="enableShare" :share-url="shareUrl"></post>
                         </div>
                     </div>
                     <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage" :changePage="changePage" :settings="pagination"></pagination>
@@ -156,9 +156,15 @@
             enableCategories: {
                 type: Boolean,
                 default: true
+            },
+            enableShare: {
+                type: Boolean,
+                default: false
+            },
+            shareUrl: {
+                type: String,
+                default: ''
             }
-
-
         },
         data() {
             return {

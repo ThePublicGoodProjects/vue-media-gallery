@@ -1,89 +1,89 @@
-$facebook-color: #4267b2;
-$twitter-color: #1DA1F2;
-$download-button-bg: #e0dddd;
-$download-button-color: #6b6b6b;
+$facebook-color : #4267b2;
+$twitter-color : #1DA1F2;
+$download-button-bg : #e0dddd;
+$download-button-color : #6b6b6b;
 
 .posts {
     .cursor-pointer {
-        cursor: pointer;
+        cursor : pointer;
     }
 
     .label {
-        background-color: transparent;
+        background-color : transparent;
     }
 
     .button-facebook,
     .button-download,
     .button-twitter {
-        width: 50px;
+        width : 50px;
     }
 
     .button-facebook {
-        background-color: $facebook-color;
-        color: white;
+        background-color : $facebook-color;
+        color            : white;
 
         &:hover {
-            background-color: darken($facebook-color, 10%);
+            background-color : darken($facebook-color, 10%);
 
         }
     }
 
     .button-twitter {
-        background-color: $twitter-color;
-        color: white;
+        background-color : $twitter-color;
+        color            : white;
 
         &:hover {
-            background-color: darken($twitter-color, 10%);
+            background-color : darken($twitter-color, 10%);
 
         }
     }
 
     .button-download {
-        width: auto;
-        background-color: $download-button-bg;
-        color: $download-button-color;
+        width            : auto;
+        background-color : $download-button-bg;
+        color            : $download-button-color;
 
         &:visited,
         &:hover,
         &:active {
-            color: $download-button-color;
-            background-color: darken($download-button-bg, 10%);
+            color            : $download-button-color;
+            background-color : darken($download-button-bg, 10%);
         }
     }
 
     .pagination {
-        text-align: left;
-        margin: 1rem 0;
+        text-align : left;
+        margin     : 1rem 0;
 
         input {
-            width: 40px;
-            display: inline-block;
-            padding-bottom: 0;
-            padding-top: 0;
-            height: auto;
-            text-align: center;
+            width          : 40px;
+            display        : inline-block;
+            padding-bottom : 0;
+            padding-top    : 0;
+            height         : auto;
+            text-align     : center;
         }
 
         li {
-            display:inline-block;
+            display : inline-block;
         }
     }
 
     .button {
         i {
-            padding: 0 .25rem;
+            padding : 0 .25rem;
         }
     }
 
     .pagination-previous,
     .pagination-next {
-        display: inline-block;
+        display : inline-block;
     }
 
     .pagination-first {
         a {
-            margin-left: .5rem;
-            border-bottom: 1px solid #ccc;
+            margin-left   : .5rem;
+            border-bottom : 1px solid #ccc;
         }
 
 
@@ -91,107 +91,107 @@ $download-button-color: #6b6b6b;
 
     .pagination-last {
         a {
-            margin-right: .5rem;
-            border-bottom: 1px solid #ccc;
+            margin-right  : .5rem;
+            border-bottom : 1px solid #ccc;
         }
     }
 
     .post-total {
-        float: right;
-        margin-right: 1rem;
+        float        : right;
+        margin-right : 1rem;
     }
 
     label {
-        text-align: left;
+        text-align : left;
     }
 
     .list-item-download {
         //position: absolute;
         //right: 1rem;
-        margin-top: 1rem;
-        width: auto;
+        margin-top : 1rem;
+        width      : auto;
 
         > * {
-            margin-right: 5px;
+            margin-right : 5px;
         }
     }
 
     .post-card {
-        text-align: left;
+        text-align : left;
 
         &.campaign {
             img {
-                margin-bottom: 1rem;
+                margin-bottom : 1rem;
             }
 
             .button.clear {
-                color: black;
+                color : black;
             }
 
             p:not(:first-child) {
-                text-align: left;
+                text-align : left;
             }
 
         }
 
         .media-object-section {
-            width: 50%;
+            width : 50%;
         }
 
 
     }
 
     .post-results {
-        min-height: 700px;
+        min-height : 700px;
 
         .list-view {
 
             > * {
-                border-bottom: 1px solid $medium-gray;
-                padding: 1rem 0;
+                border-bottom : 1px solid $medium-gray;
+                padding       : 1rem 0;
             }
 
             .post-card {
                 .thumbnail {
-                    width: 100px;
-                    height: 100px;
+                    width  : 100px;
+                    height : 100px;
                     @include breakpoint(medium) {
 
-                        width: 200px;
-                        height: 200px;
+                        width  : 200px;
+                        height : 200px;
                     }
                 }
 
                 .list-item {
-                    position: relative;
-                    display: flex;
+                    position : relative;
+                    display  : flex;
 
                     .thumbnail {
-                        display: block;
+                        display : block;
                     }
 
                     .details {
-                        margin: 1rem 0 0 0;
+                        margin : 1rem 0 0 0;
                         @include breakpoint(medium) {
-                            margin: 0 1rem;
-                            width: calc(100% - 300px);
+                            margin : 0 1rem;
+                            width  : calc(100% - 300px);
                         }
                     }
 
                     .title {
                         > * {
-                            display: inline-block;
+                            display : inline-block;
                         }
 
                     }
 
                     .list-item-content {
-                        flex-grow: 1;
+                        flex-grow : 1;
 
                         > * {
                             @include breakpoint(medium) {
-                                display: inline-block;
-                                vertical-align: top;
+                                display        : inline-block;
+                                vertical-align : top;
                             }
 
                         }
@@ -199,17 +199,17 @@ $download-button-color: #6b6b6b;
                         .details-body {
                             //display:none;
                             @include breakpoint(medium) {
-                                display: block;
+                                display : block;
                             }
                         }
 
                         .title {
                             > * {
-                                vertical-align: top;
+                                vertical-align : top;
                             }
 
                             .label {
-                                margin-left: .5rem;
+                                margin-left : .5rem;
                             }
                         }
                     }
@@ -217,77 +217,82 @@ $download-button-color: #6b6b6b;
 
                     > * {
                         &:last-child {
-                            margin-left: auto;
+                            margin-left : auto;
                         }
                     }
                 }
             }
+        }
+
+        .grid-view {
+
         }
     }
 
     .post-item {
         .teaser {
             img {
-                max-height: 70px;
+                max-height : 70px;
             }
         }
 
         .img,
         .thumbnail {
-            background-color: $white;
-            margin: 0;
-            width: 100%;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            height: 300px;
-            border: none;
+            background-color    : $white;
+            margin              : 0;
+            width               : 100%;
+            background-position : center;
+            background-repeat   : no-repeat;
+            background-size     : cover;
+            height              : 300px;
+            border              : none;
             @include breakpoint(medium) {
-                background-size: cover;
-                height: 300px;
+                background-size : cover;
+                height          : 300px;
             }
             @include breakpoint(large) {
-                height: 300px;
+                height : 300px;
             }
 
             &.contain {
-                background-size: contain;
+                background-size : contain;
 
             }
         }
 
         .media-object {
             .thumbnail {
-                box-shadow: none;
-                background-size: contain;
-                height:270px;
-                background-color: #f4f4f4;
+                box-shadow       : none;
+                background-size  : contain;
+                height           : 270px;
+                background-color : #f4f4f4;
                 @include breakpoint(medium) {
                     //height: 00px;
                 }
             }
 
             @include breakpoint(small only) {
-                border-bottom: 1px solid #ccc;
-                margin-bottom: 4rem;
+                border-bottom : 1px solid #ccc;
+                margin-bottom : 4rem;
             }
         }
 
         .title {
-            margin-bottom: .5rem;
+            margin-bottom : .5rem;
         }
 
         .media-object-section {
-            padding: 1rem;
+            padding : 1rem;
 
             &.image {
-                padding: 0;
+                width   : auto;
+                padding : 0;
             }
 
             &.text {
-                padding: 0 1rem;
+                padding : 0 1rem;
                 @include breakpoint(small only) {
-                    text-align: center;
+                    text-align : center;
                 }
 
                 p,
@@ -299,17 +304,30 @@ $download-button-color: #6b6b6b;
         }
 
         .img.contain {
-            background-size: contain;
-            background-repeat: no-repeat;
-            height: 70px;
-            margin-top: 2rem;
+            background-size   : contain;
+            background-repeat : no-repeat;
+            height            : 70px;
+            margin-top        : 2rem;
             @include breakpoint(medium) {
                 //height: 200px;
-                max-width: 300px;
-                margin: 0 auto;
+                max-width : 300px;
+                margin    : 0 auto;
                 //height : 300px;
 
             }
+        }
+    }
+
+    .grid-view {
+        .post-item {
+            .media-object-section {
+
+                &.image {
+                    width : 50%;
+                }
+
+            }
+
         }
     }
 

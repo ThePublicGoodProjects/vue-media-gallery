@@ -49,7 +49,7 @@ Include the source file.
 <script src="https://unpkg.com/@pgp/vue-media-gallery@latest"></script>
 <!-- or use the specify version -->
 <script src="https://unpkg.com/@pgp/vue-media-gallery@0.0.1"></script>
-```
+``
 
 ## Usage
 
@@ -76,5 +76,6 @@ Vue.component('posts', PgpVueMediaGallery.Posts)
 | `campaign-slug`      | `String` | Campaign slug name to select the campaign-specific assets.| `''` |
 | `client-id`      | `String` | Client id to select the client-specific assets.| `''` |
 | `:enable-filters`      | `Boolean` | Display filtering options.|`false` |
+| `facebook-share-url`      | `String` | Facebook URL to scrape metas.|`''` |
 
 
