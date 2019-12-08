@@ -1,6 +1,5 @@
 <template>
     <div class="vue-media-gallery">
-
         <div class="posts" v-if="loaded">
             <div class="post-content">
                 <slot name="header" :title="pageName"></slot>
@@ -14,24 +13,28 @@
                                     </div>
                                     <select v-model="data.category" name="category" id="category">
                                         <option value="">All</option>
-                                        <option :value="category.slug" v-for="category in categories" :key="category.id">{{ category.name }}</option>
+                                        <option :value="category.slug" v-for="category in categories"
+                                                :key="category.id">{{ category.name }}
+                                        </option>
                                     </select>
                                 </li>
-                                <li v-if="hasTypes">
-                                    <div>
-                                        <label for="type">File Type</label>
-                                    </div>
-                                    <select v-model="data.type" name="type" id="type">
-                                        <option value="">All</option>
-                                        <option :value="type" v-for="type in types" :key="type">{{ type }}</option>
-                                    </select>
-                                </li>
+                                <!--<li v-if="hasTypes">-->
+                                    <!--<div>-->
+                                        <!--<label for="type">File Type</label>-->
+                                    <!--</div>-->
+                                    <!--<select v-model="data.type" name="type" id="type">-->
+                                        <!--<option value="">All</option>-->
+                                        <!--<option :value="type" v-for="type in types" :key="type">{{ type }}</option>-->
+                                    <!--</select>-->
+                                <!--</li>-->
                                 <li>
                                     <div>
                                         <label for="orderBy">Order By</label>
                                     </div>
                                     <select v-model="data.orderBy" name="orderBy" id="orderBy">
-                                        <option :value="option.value" v-for="option in orderOptions" :key="option.id">{{ option.eng }}</option>
+                                        <option :value="option.value" v-for="option in orderOptions"
+                                                :key="option.id">{{ option.eng }}
+                                        </option>
                                     </select>
                                 </li>
                             </ul>
@@ -39,51 +42,74 @@
                         <div v-if="tags.length > 0">
                             <label>Tags:</label>
                             <div class="button-group small">
-                                <button type="button" v-for="tag in tags" @click="selectTag(tag)" :key="tag" :class="isTagSelected(tag) ? 'selected' : ''"
+                                <button type="button" v-for="tag in tags" @click="selectTag(tag)" :key="tag"
+                                        :class="isTagSelected(tag) ? 'selected' : ''"
                                         class="label rounded secondary">{{ tag
                                     }}
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <div class="flex-container align-right">
-                        <div v-if="listView">
-                            <button v-if="hasSelectedPosts" type="button" title="Download Selected" class="button button-download-selected clear" @click="downloadSelectedPosts">
-                                <i class="fas fa-download"></i> <span class="hide-for-small-only">Download Selected</span>
-                            </button>
-                            <button type="button" class="button clear" @click="selectAllPosts" title="Select All">
-                                <i v-if="allPostsSelected" class="far fa-check-square"></i>
-                                <i v-else class="far fa-square"></i>
-                            </button>
-                        </div>
-                        <div class="view-mode-buttons">
-                            <button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'active' : ''" type="button" title="Gallery View" class="button clear cursor-pointer">
-                                <i class="fas fa-th"></i>
-                            </button>
-                            <button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'active' : ''" type="button" title="List View" class="button clear">
-                                <i class="fas fa-th-list"></i>
-                            </button>
-                        </div>
-                    </div>
+                    <!--<div class="flex-container align-right" v-if="enableFilters">-->
+                        <!--<div>-->
+                            <!--<button v-if="hasSelectedPosts" type="button" title="Download Selected"-->
+                                    <!--class="button button-download-selected clear" @click="downloadSelectedPosts">-->
+                                <!--<i class="fas fa-download"></i>-->
+                                <!--<span class="hide-for-small-only">Download Selected</span>-->
+                            <!--</button>-->
+                            <!--<button type="button" class="button clear" @click="selectAllPosts" title="Select All">-->
+                                <!--<i v-if="allPostsSelected" class="far fa-check-square"></i>-->
+                                <!--<i v-else class="far fa-square"></i>-->
+                            <!--</button>-->
+                        <!--</div>-->
+                        <!--<div class="view-mode-buttons">-->
+                            <!--<button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'active' : ''"-->
+                                    <!--type="button" title="Gallery View" class="button clear cursor-pointer">-->
+                                <!--<i class="fas fa-th"></i>-->
+                            <!--</button>-->
+                            <!--<button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'active' : ''"-->
+                                    <!--type="button" title="List View" class="button clear">-->
+                                <!--<i class="fas fa-th-list"></i>-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="text-right margin-right-1">Total: {{ pagination.total}}</div>
                 </div>
                 <div class="post-results margin-bottom-3">
-                    <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage" :changePage="changePage" :settings="pagination"></pagination>
+                    <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage"
+                                :changePage="changePage" :settings="pagination"></pagination>
                     <div class="grid-x grid-padding-x" :class="viewModeClass" v-if="hasPosts">
                         <div class="cell post-card" v-for="post in posts" :key="post.id">
-                            <post :mode="viewMode" :is-checked="isPostSelected(post.id)" @checked="checked" @selectTag="selectTag" @showModal="showModal" @download="download"
+                            <post :mode="viewMode"
+                                  @checked="checked"
+                                  @selectTag="selectTag"
+                                  @showModal="showModal"
+                                  @download="download"
+                                  :is-checked="isPostSelected(post.id)"
                                   :enabledTags="enabledTags"
-                                  :post="post" :requestUrl="requestUrl" :enable-share="enableShare" :share-url="shareUrl"></post>
+                                  :enable-filters="enableFilters"
+                                  :post="post"
+                                  :requestUrl="requestUrl"
+                                  :enable-share="enableShare"
+                                  :share-url="shareUrl"
+                                  :fields="fields"
+                                  :imgix="imgix"
+                                  :imgix-params="imgixParams"
+                            >
+                            </post>
                         </div>
                     </div>
-                    <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage" :changePage="changePage" :settings="pagination"></pagination>
+                    <pagination :prevPage="prevPage" :nextPage="nextPage" :lastPage="lastPage" :firstPage="firstPage"
+                                :changePage="changePage" :settings="pagination"></pagination>
                 </div>
             </div>
             <div class="modal posts-modal micromodal-slide" id="posts-modal" aria-hidden="true">
                 <div class="modal__overlay" tabindex="-1" data-micromodal-close>
                     <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="posts-modal-title">
                         <div class="flex-container align-right">
-                            <button class="button clear modal-close" data-micromodal-close aria-label="Close this dialog window"><i class="fas fa-times" data-micromodal-close></i>
+                            <button class="button clear modal-close" data-micromodal-close
+                                    aria-label="Close this dialog window">
+                                <i class="fas fa-times" data-micromodal-close></i>
                             </button>
                         </div>
                         <main class="modal__content" id="posts-modal-content">
@@ -132,37 +158,51 @@
             CopyToClipboard
         },
         props     : {
-            requestUrl   : {
+            requestUrl      : {
                 type   : String,
                 default: 'https://downloadcenter.publicgoodprojects.org'
             },
-            perPage      : {
+            perPage         : {
                 type   : Number,
                 default: 10
             },
-            campaignSlug : {
+            campaignSlug    : {
                 type: String
             },
-            clientId     : {
+            clientId        : {
                 type: Number
             },
-            category: {
+            category        : {
                 type: String
             },
-            enableFilters: {
+            enableFilters   : {
                 type   : Boolean,
                 default: false
             },
             enableCategories: {
-                type: Boolean,
+                type   : Boolean,
                 default: true
             },
-            enableShare: {
-                type: Boolean,
+            enableShare     : {
+                type   : Boolean,
                 default: false
             },
-            shareUrl: {
+            shareUrl        : {
+                type   : String,
+                default: ''
+            },
+            fields: {
+                type: Object,
+                default: function () {
+                    return {};
+                }
+            },
+            imgix: {
                 type: String,
+                default: ''
+            },
+            imgixParams: {
+                type   : String,
                 default: ''
             }
         },
@@ -219,7 +259,6 @@
                 this.viewMode = hashVals.viewMode;
             }
 
-
             if (this.category) {
                 hashVals.category = this.category;
             }
@@ -245,9 +284,7 @@
                 this.data.perPage = hashVals.perPage;
             }
 
-
-
-            if (! skipLoad) {
+            if (!skipLoad) {
                 this.loadUrl(this.url, hashVals);
             }
         },
@@ -277,7 +314,7 @@
                 return this.viewMode === 'grid';
             },
             viewModeClass   : function () {
-                return this.gridView ? 'small-up-1 medium-up-2 large-up-2 grid-view' : 'small-up-1 list-view';
+                return this.gridView ? 'small-up-1 medium-up-2 large-up-3 grid-view' : 'small-up-1 list-view';
             },
             hasSelectedPosts: function () {
                 return this.selectedPosts && this.selectedPosts.length;
@@ -325,10 +362,10 @@
             },
             'data.orderBy' : function (newValue, oldValue) {
                 if (newValue === 'new') {
-                    this.params.order   = 'created_at';
+                    this.params.order = 'created_at';
                     this.params.orderBy = 'desc';
                 } else if (newValue === 'old') {
-                    this.params.order   = 'created_at';
+                    this.params.order = 'created_at';
                     this.params.orderBy = 'asc';
                 }
 
@@ -358,10 +395,10 @@
                     this.url = url;
                 } else {
                     params = url;
-                    url    = this.url.replace(/page=[\d]+&?/, '');
+                    url = this.url.replace(/page=[\d]+&?/, '');
                 }
 
-                params         = params || {};
+                params = params || {};
                 params.perPage = this.data.perPage;
 
                 if (/\?/.test(url)) {
@@ -371,16 +408,16 @@
                 }
 
                 axios.get(url, {params: params}).then(function (response) {
-                    let data        = response.data || {};
+                    let data = response.data || {};
                     vm.campaignData = data.campaign || false;
-                    vm.categories   = data.categories || {};
-                    vm.allPosts     = data.posts && data.posts.data || {};
-                    vm.posts        = vm.allPosts;
-                    vm.client       = data.client || {};
-                    vm.tags         = data.tags || [];
-                    vm.pagination   = data.posts;
-                    vm.types        = data.types || [];
-                    vm.loaded       = true;
+                    vm.categories = data.categories || {};
+                    vm.allPosts = data.posts && data.posts.data || {};
+                    vm.posts = vm.allPosts;
+                    vm.client = data.client || {};
+                    vm.tags = data.tags || [];
+                    vm.pagination = data.posts;
+                    vm.types = data.types || [];
+                    vm.loaded = true;
                     vm.data.pageNum = vm.pagination.current_page;
                 });
             },
@@ -401,7 +438,7 @@
             showModal            : function (post) {
                 let vm = this;
 
-                this.modal       = post;
+                this.modal = post;
                 this.modal.image = this.modal.file_path.match(/\.gif/) ? this.modal.file_path : (this.modal.thumbnail_path || this.modal.file_path);
                 MicroModal.show('posts-modal', {
                     onClose: function () {
@@ -533,6 +570,6 @@
     @import '../assets/sass/app.scss';
 
     .post-content {
-        margin-bottom: 1rem;
+        margin-bottom : 1rem;
     }
 </style>

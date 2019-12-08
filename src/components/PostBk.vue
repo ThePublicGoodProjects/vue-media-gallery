@@ -1,44 +1,73 @@
 <template>
-    <div class="post-item-container">
-        <div class="post-item-selector" v-if="enableFilters">
-            <label class="checkmark">
-                <input type="checkbox" v-model="data.checked">
-                <span class="placeholder"></span>
-            </label>
-        </div>
-        <div class="post-item-content">
-            <div class="post-item-image">
-                <a @click="showModal">
-                    <img class="thumbnail" :src="thumbPath"/>
-                </a>
+    <div class="post-item" :class="isVideo ? 'video' : ''">
+        <div class="media-object stack-for-small" v-if="mode === 'grid'">
+            <div class="media-object-section image cursor-pointer" @click="showModal()">
+                <div class="thumbnail" :style="thumbStyle"></div>
             </div>
-            <div class="post-item-text" v-if="showField('text-content')">
-                <h4 v-if="showField('title')" class="cursor-pointer post-title">{{ post.title }}</h4>
-                <p class="post-tags" v-if="hasTags && showField('tags')">
+            <div class="media-object-section text">
+                <h4 class="cursor-pointer post-title" @click="showModal()">{{ post.title }}</h4>
+                <p class="post-tags">
                     <span @click="selectTag(tag)" :class="isSelected(tag) ? 'selected' : ''"
                           class="cursor-pointer label secondary rounded"
                           v-for="tag in post.tag_names" :key="tag">{{tag}}</span>
                 </p>
-                <p v-if="showField('teaser')" class="post-teaser" v-html="filterTeaser(post.body)"></p>
-                <div v-if="hasClipboard && showField('clipboard')" class="post-clipboard">
+                <p class="post-teaser" v-html="filterTeaser(post.body)" @click="showModal()"></p>
+                <div class="post-clipboard" v-if="hasClipboard">
                     <copy-to-clipboard :content="post.clipboard"></copy-to-clipboard>
                 </div>
-            </div>
-            <div class="post-item-share" v-if="showField('share-links')">
-                <div class="buttons">
-                    <a v-if="facebookShareUrl" target="_blank" :href="facebookShareUrl"
+                <div class="list-item-download">
+                    <a target="_blank" :href="facebookShareUrl" v-if="facebookShareUrl"
                        class="button radius button-facebook">
-                        Share <i class="fab fa-facebook-f"></i>
+                        <i class="fab fa-facebook-f"></i>
                     </a>
                     <a v-if="twitterShareUrl" target="_blank" :href="twitterShareUrl"
                        class="button radius button-twitter">
-                        Share <i class="fab fa-twitter"></i>
+                        <i class="fab fa-twitter"></i>
                     </a>
                     <a class="button button-download radius" @click="download(post)" :href="downloadUrl"
                        :data-ga-label="post.file_path" title="download">
                         <i class="fas fa-download"></i>
                     </a>
                 </div>
+            </div>
+        </div>
+        <div v-if="mode === 'list'" class="list-item">
+            <div class="list-item-selector">
+                <label class="container">
+                    <input type="checkbox" v-model="isChecked">
+                    <span class="checkmark"></span>
+                </label>
+            </div>
+            <div class="list-item-content">
+                <div class="thumbnail cursor-pointer" @click="showModal()" :style="thumbStyle"></div>
+                <div class="details">
+                    <div class="title">
+                        <h4 v-if="hasTitle" class="cursor-pointer" @click="showModal()">{{ post.title }}</h4>
+                    </div>
+                    <p v-if="hasTags">
+                            <span @click="selectTag(tag)" :class="isSelected(tag) ? 'selected' : ''"
+                                  class="cursor-pointer label secondary rounded"
+                                  v-for="tag in post.tag_names" :key="tag">{{tag}}</span>
+                    </p>
+                    <p v-if="hasBody" v-html="post.body" class="details-body" @click="showModal()"></p>
+                    <div v-if="hasClipboard">
+                        <copy-to-clipboard :content="post.clipboard"></copy-to-clipboard>
+                    </div>
+                </div>
+            </div>
+            <div class="list-item-download">
+                <a target="_blank" :href="facebookShareUrl" v-if="facebookShareUrl"
+                   class="button radius button-facebook">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a v-if="twitterShareUrl" target="_blank" :href="twitterShareUrl"
+                   class="button radius button-twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a class="button button-download radius" @click="download(post)" :href="downloadUrl"
+                   :data-ga-label="post.file_path" title="download">
+                    <i class="fas fa-download"></i>
+                </a>
             </div>
         </div>
     </div>
@@ -56,12 +85,6 @@
             CopyToClipboard
         },
         props     : {
-            fields     : {
-                type   : Object,
-                default: function () {
-                    return {};
-                }
-            },
             mode       : {
                 type   : String,
                 default: 'list'
@@ -71,10 +94,6 @@
             },
             enabledTags: {
                 type: Array
-            },
-            enableFilters: {
-                type: Boolean,
-                default: false
             },
             isChecked  : {
                 type   : Boolean,
@@ -91,35 +110,22 @@
             shareUrl   : {
                 type   : String,
                 default: ''
-            },
-            imgix: {
-                type: String,
-                default: false
-            },
-            imgixParams: {
-                type   : String,
-                default: false
             }
         },
         data() {
-            let
-                twitterShareUrl = '',
-                facebookShareUrl = '',
+            let data = {
+                    twitterShareUrl : '',
+                    facebookShareUrl: ''
+                },
                 shareUrl;
 
             if (this.enableShare && this.shareUrl.length) {
-                shareUrl = [this.shareUrl, 'assets', this.post.uuid].join('/');
+                shareUrl = [this.shareUrl, 'assets', this.post.campaign_id, this.post.id].join('/');
 
-                facebookShareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl;
-                twitterShareUrl = 'https://twitter.com/intent/tweet?url=' + shareUrl;
+                data.facebookShareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl;
+                data.twitterShareUrl = 'https://twitter.com/intent/tweet?url=' + shareUrl;
             }
-            return {
-                twitterShareUrl : twitterShareUrl,
-                facebookShareUrl: facebookShareUrl,
-                data            : {
-                    checked: this.isChecked
-                }
-            }
+            return data;
         },
         created() {
         },
@@ -127,18 +133,11 @@
         },
         computed  : {
             downloadUrl   : function () {
-                return this.requestUrl + (this.post.url ? this.post.url : '/download/' + this.post.uuid);
+                return this.requestUrl + (this.post.url ? this.post.url : '/download/' + this.post.file);
             },
             thumbStyle    : function () {
                 let path = this.post.thumbnail_path || this.post.file_path;
                 return 'background-image: url(' + path + ')';
-            },
-            thumbPath     : function () {
-                if (this.imgix) {
-                    let imgixParams = this.imgixParams.length ? '?' + this.imgixParams : '';
-                    return this.imgix + '/' + (this.post.thumbnail || this.post.file) + imgixParams;
-                }
-                return this.post.thumbnail_path || this.post.file_path;
             },
             isVideo       : function () {
                 return this.post.file_type === 'video';
@@ -165,24 +164,13 @@
 
                 return 'Download Image';
             }
-
         },
         watch     : {
-            'data.checked': function (newValue) {
+            'isChecked': function (newValue) {
                 this.$emit('checked', {id: this.post.id, checked: newValue});
-            },
-            'isChecked'   : function (newValue) {
-                this.data.checked = newValue;
             }
         },
         methods   : {
-            showField(field) {
-                if (field in this.fields) {
-                    return this.fields[field] === true;
-                }
-
-                return true;
-            },
             filterTeaser: function (fullText) {
                 if (fullText) {
                     let text = $(fullText.replace(/<br>/g, '\n')).text();

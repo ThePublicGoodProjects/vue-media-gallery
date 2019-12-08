@@ -5,5 +5,7 @@
 .vue-media-gallery {
     @import "modal";
     @import "posts";
+    @import "post";
     @import "checkbox";
+    @import "pagination";
 }

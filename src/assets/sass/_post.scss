@@ -1,0 +1,40 @@
+.post-item-container {
+    display:flex;
+
+    .post-item-selector {
+
+    }
+    .post-item-image {
+        a {
+            display:block;
+        }
+        img {
+            max-width: 100%;
+        }
+
+        .thumbnail {
+            margin: 0;
+        }
+
+    }
+
+    .post-item-share {
+        .buttons {
+            display:flex;
+            justify-content : center;
+            margin-top: 1rem;
+        }
+
+        .button {
+            margin-right: 4px;
+        }
+    }
+}
+
+.list-view {
+    .post-item-image {
+        max-width: 50%;
+    }
+
+}
+
