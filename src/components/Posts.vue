@@ -128,8 +128,23 @@
                         <div class="text-center" v-if="modal.clipboard">
                             <copy-to-clipboard :content="modal.clipboard"></copy-to-clipboard>
                         </div>
-                        <div class="text-center margin-top-1">
-                            <a @click="download(modal)" class="button" :href="downloadUrl(modal)">Download</a>
+                        <div class="margin-top-1">
+                            <div class="buttons">
+                                <a v-if="shareUrl.length" target="_blank" :href="getFacebookShareUrl(modal)"
+                                   class="button radius button-facebook">
+                                    Share
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a v-if="shareUrl.length" target="_blank" :href="getTwitterShareUrl(modal)"
+                                   class="button radius button-twitter">
+                                    Share
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a class="button button-download radius" @click="download(modal)" :href="downloadUrl(modal)"
+                                   :data-ga-label="modal.file_path" title="download">
+                                    <i class="fas fa-download"></i>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -421,8 +436,15 @@
                     vm.data.pageNum = vm.pagination.current_page;
                 });
             },
+            getFacebookShareUrl: function (post) {
+                return 'https://www.facebook.com/sharer/sharer.php?u=' + [this.shareUrl, 'assets', post.uuid].join('/');
+
+            },
+            getTwitterShareUrl: function (post) {
+                return 'https://twitter.com/intent/tweet?url=' + [this.shareUrl, 'assets', post.uuid].join('/');
+            },
             downloadUrl: function (post) {
-                return this.requestUrl + (post.url ? post.url : '/download/' + post.file);
+                return this.requestUrl + (post.url ? post.url : '/download/' + post.uuid);
             },
             download   : function (post) {
                 // gtmEvents.log(this.downloadCategory, this.downloadAction, post.url ? post.url : post.file);

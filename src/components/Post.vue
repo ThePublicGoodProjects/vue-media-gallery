@@ -108,10 +108,8 @@
                 shareUrl;
 
             if (this.enableShare && this.shareUrl.length) {
-                shareUrl = [this.shareUrl, 'assets', this.post.uuid].join('/');
-
-                facebookShareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl;
-                twitterShareUrl = 'https://twitter.com/intent/tweet?url=' + shareUrl;
+                facebookShareUrl = this.$parent.getFacebookShareUrl(this.post);
+                twitterShareUrl = this.$parent.getTwitterShareUrl(this.post);
             }
             return {
                 twitterShareUrl : twitterShareUrl,

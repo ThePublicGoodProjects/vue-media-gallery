@@ -12,7 +12,7 @@
                 <!--:fields="{'text-content': false}"-->
         <!--&gt;-->
              <posts
-                     request-url="http://downloadcenter.actionminded.lcl"
+                     request-url="https://downloadcenter.actionminded.org"
                      :per-page="10"
                      :enable-filters="true"
                      campaign-slug="mental-health-champions"
