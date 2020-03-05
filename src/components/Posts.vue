@@ -19,13 +19,13 @@
                                     </select>
                                 </li>
                                 <!--<li v-if="hasTypes">-->
-                                    <!--<div>-->
-                                        <!--<label for="type">File Type</label>-->
-                                    <!--</div>-->
-                                    <!--<select v-model="data.type" name="type" id="type">-->
-                                        <!--<option value="">All</option>-->
-                                        <!--<option :value="type" v-for="type in types" :key="type">{{ type }}</option>-->
-                                    <!--</select>-->
+                                <!--<div>-->
+                                <!--<label for="type">File Type</label>-->
+                                <!--</div>-->
+                                <!--<select v-model="data.type" name="type" id="type">-->
+                                <!--<option value="">All</option>-->
+                                <!--<option :value="type" v-for="type in types" :key="type">{{ type }}</option>-->
+                                <!--</select>-->
                                 <!--</li>-->
                                 <li>
                                     <div>
@@ -51,27 +51,27 @@
                         </div>
                     </div>
                     <!--<div class="flex-container align-right" v-if="enableFilters">-->
-                        <!--<div>-->
-                            <!--<button v-if="hasSelectedPosts" type="button" title="Download Selected"-->
-                                    <!--class="button button-download-selected clear" @click="downloadSelectedPosts">-->
-                                <!--<i class="fas fa-download"></i>-->
-                                <!--<span class="hide-for-small-only">Download Selected</span>-->
-                            <!--</button>-->
-                            <!--<button type="button" class="button clear" @click="selectAllPosts" title="Select All">-->
-                                <!--<i v-if="allPostsSelected" class="far fa-check-square"></i>-->
-                                <!--<i v-else class="far fa-square"></i>-->
-                            <!--</button>-->
-                        <!--</div>-->
-                        <!--<div class="view-mode-buttons">-->
-                            <!--<button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'active' : ''"-->
-                                    <!--type="button" title="Gallery View" class="button clear cursor-pointer">-->
-                                <!--<i class="fas fa-th"></i>-->
-                            <!--</button>-->
-                            <!--<button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'active' : ''"-->
-                                    <!--type="button" title="List View" class="button clear">-->
-                                <!--<i class="fas fa-th-list"></i>-->
-                            <!--</button>-->
-                        <!--</div>-->
+                    <!--<div>-->
+                    <!--<button v-if="hasSelectedPosts" type="button" title="Download Selected"-->
+                    <!--class="button button-download-selected clear" @click="downloadSelectedPosts">-->
+                    <!--<i class="fas fa-download"></i>-->
+                    <!--<span class="hide-for-small-only">Download Selected</span>-->
+                    <!--</button>-->
+                    <!--<button type="button" class="button clear" @click="selectAllPosts" title="Select All">-->
+                    <!--<i v-if="allPostsSelected" class="far fa-check-square"></i>-->
+                    <!--<i v-else class="far fa-square"></i>-->
+                    <!--</button>-->
+                    <!--</div>-->
+                    <!--<div class="view-mode-buttons">-->
+                    <!--<button @click="viewMode = 'grid'" :class="viewMode === 'grid' ? 'active' : ''"-->
+                    <!--type="button" title="Gallery View" class="button clear cursor-pointer">-->
+                    <!--<i class="fas fa-th"></i>-->
+                    <!--</button>-->
+                    <!--<button @click="viewMode = 'list'" :class="viewMode === 'list' ? 'active' : ''"-->
+                    <!--type="button" title="List View" class="button clear">-->
+                    <!--<i class="fas fa-th-list"></i>-->
+                    <!--</button>-->
+                    <!--</div>-->
                     <!--</div>-->
                     <div class="text-right margin-right-1">Total: {{ pagination.total}}</div>
                 </div>
@@ -129,7 +129,7 @@
                             <copy-to-clipboard :content="modal.clipboard"></copy-to-clipboard>
                         </div>
                         <div class="margin-top-1">
-                            <div class="buttons">
+                            <div class="buttons text-center">
                                 <a v-if="shareUrl.length" target="_blank" :href="getFacebookShareUrl(modal)"
                                    class="button radius button-facebook">
                                     Share
@@ -140,7 +140,8 @@
                                     Share
                                     <i class="fab fa-twitter"></i>
                                 </a>
-                                <a class="button button-download radius" @click="download(modal)" :href="downloadUrl(modal)"
+                                <a class="button button-download radius" @click="download(modal)"
+                                   :href="downloadUrl(modal)"
                                    :data-ga-label="modal.file_path" title="download">
                                     <i class="fas fa-download"></i>
                                 </a>
@@ -154,444 +155,476 @@
 </template>
 
 <script>
-    /* eslint-disable no-unused-vars */
+  /* eslint-disable no-unused-vars */
 
-    import $ from 'jquery';
-    import axios from 'axios';
-    import MicroModal from 'micromodal';
-    import * as HashParams from '../js/hash-params';
-    import CopyToClipboard from './CopyToClipboard';
-    import Post from './Post';
-    import Pagination from './Pagination';
-    import _ from 'lodash';
+  import $ from 'jquery'
+  import axios from 'axios'
+  import MicroModal from 'micromodal'
+  import * as HashParams from '../js/hash-params'
+  import CopyToClipboard from './CopyToClipboard'
+  import Post from './Post'
+  import Pagination from './Pagination'
+  import _ from 'lodash'
+  import smoothscroll from 'smoothscroll-polyfill';
 
-    export default {
-        name      : "Posts",
-        components: {
-            Post,
-            Pagination,
-            CopyToClipboard
+  export default {
+    name: 'Posts',
+    components: {
+      Post,
+      Pagination,
+      CopyToClipboard
+    },
+    props: {
+      requestUrl: {
+        type: String,
+        default: 'https://downloadcenter.publicgoodprojects.org'
+      },
+      perPage: {
+        type: Number,
+        default: 10
+      },
+      campaignSlug: {
+        type: String
+      },
+      clientId: {
+        type: Number
+      },
+      category: {
+        type: String
+      },
+      enableFilters: {
+        type: Boolean,
+        default: false
+      },
+      enableCategories: {
+        type: Boolean,
+        default: true
+      },
+      enableShare: {
+        type: Boolean,
+        default: false
+      },
+      shareUrl: {
+        type: String,
+        default: ''
+      },
+      gridContainer: {
+        type: String,
+        default: 'small-up-1 medium-up-2 large-up-3 grid-view'
+      },
+      listContainer: {
+        type: String,
+        default: 'small-up-1 list-view'
+      },
+      fields: {
+        type: Object,
+        default: function () {
+          return {}
+        }
+      },
+      imgix: {
+        type: String,
+        default: ''
+      },
+      imgixParams: {
+        type: String,
+        default: ''
+      }
+    },
+    data () {
+      return {
+        orderOptions: [
+          {
+            eng: 'Most Recent',
+            value: 'new',
+          },
+          {
+            eng: 'Oldest',
+            value: 'old'
+          }
+
+        ],
+        data: {
+          orderBy: 'new',
+          category: '',
+          type: '',
+          pageNum: 1,
+          perPage: this.perPage
         },
-        props     : {
-            requestUrl      : {
-                type   : String,
-                default: 'https://downloadcenter.publicgoodprojects.org'
-            },
-            perPage         : {
-                type   : Number,
-                default: 10
-            },
-            campaignSlug    : {
-                type: String
-            },
-            clientId        : {
-                type: Number
-            },
-            category        : {
-                type: String
-            },
-            enableFilters   : {
-                type   : Boolean,
-                default: false
-            },
-            enableCategories: {
-                type   : Boolean,
-                default: true
-            },
-            enableShare     : {
-                type   : Boolean,
-                default: false
-            },
-            shareUrl        : {
-                type   : String,
-                default: ''
-            },
-            fields: {
-                type: Object,
-                default: function () {
-                    return {};
-                }
-            },
-            imgix: {
-                type: String,
-                default: ''
-            },
-            imgixParams: {
-                type   : String,
-                default: ''
-            }
-        },
-        data() {
-            return {
-                orderOptions    : [
-                    {
-                        eng  : 'Most Recent',
-                        value: 'new',
-                    },
-                    {
-                        eng  : 'Oldest',
-                        value: 'old'
-                    }
+        downloadCategory: 'download',
+        downloadAction: location.pathname,
+        posts: [],
+        client: {},
+        pagination: {},
+        tags: [],
+        enabledTags: [],
+        selectedPosts: [],
+        types: [],
+        categories: [],
+        modal: {},
+        viewMode: 'grid',
+        loaded: false,
+      }
+    },
+    created () {
+      smoothscroll.polyfill();
+    },
+    mounted () {
+      let url,
+        skipLoad
+      this.params = {}
+      if (this.campaignSlug) {
+        this.url = this.requestUrl + '/api/campaigns/' + this.campaignSlug
+      } else if (this.clientId) {
+        this.url = this.requestUrl + '/api/assets/' + this.clientId
+      }
 
-                ],
-                data            : {
-                    orderBy : 'new',
-                    category: '',
-                    type    : '',
-                    pageNum : 1,
-                    perPage : this.perPage
-                },
-                downloadCategory: 'download',
-                downloadAction  : location.pathname,
-                posts           : [],
-                client          : {},
-                pagination      : {},
-                tags            : [],
-                enabledTags     : [],
-                selectedPosts   : [],
-                types           : [],
-                categories      : [],
-                modal           : {},
-                viewMode        : 'grid',
-                loaded          : false,
-            };
-        },
-        created() {
-        },
-        mounted() {
-            let url,
-                skipLoad;
-            this.params = {};
-            if (this.campaignSlug) {
-                this.url = this.requestUrl + '/api/campaigns/' + this.campaignSlug;
-            } else if (this.clientId) {
-                this.url = this.requestUrl + '/api/assets/' + this.clientId;
-            }
+      let hashVals = HashParams.parse()
 
-            let hashVals = HashParams.parse();
+      if (hashVals.viewMode) {
+        this.viewMode = hashVals.viewMode
+      }
 
-            if (hashVals.viewMode) {
-                this.viewMode = hashVals.viewMode;
-            }
+      if (this.category) {
+        hashVals.category = this.category
+      }
 
-            if (this.category) {
-                hashVals.category = this.category;
-            }
+      if (hashVals.category) {
+        this.data.category = hashVals.category
+        skipLoad = true
+      }
+      if (hashVals.tags) {
+        this.enabledTags = hashVals.tags
+      }
+      if (hashVals.file_type) {
+        this.data.type = hashVals.file_type
+        skipLoad = true
+      }
+      if (hashVals.order) {
+        this.data.orderBy = hashVals.orderBy === 'asc' ? 'old' : 'new'
+        skipLoad = true
 
-            if (hashVals.category) {
-                this.data.category = hashVals.category;
-                skipLoad = true;
-            }
-            if (hashVals.tags) {
-                this.enabledTags = hashVals.tags;
-            }
-            if (hashVals.file_type) {
-                this.data.type = hashVals.file_type;
-                skipLoad = true;
-            }
-            if (hashVals.order) {
-                this.data.orderBy = hashVals.orderBy === 'asc' ? 'old' : 'new';
-                skipLoad = true;
+      }
 
-            }
+      if (hashVals.perPage) {
+        this.data.perPage = hashVals.perPage
+      }
 
-            if (hashVals.perPage) {
-                this.data.perPage = hashVals.perPage;
-            }
+      if (!skipLoad) {
+        this.loadUrl(this.url, hashVals)
+      }
+    },
+    computed: {
+      paginate: function () {
+        return this.pagination.last_page !== 1
+      },
+      isCampaign: function () {
+        return !!this.campaignData
+      },
+      pageName: function () {
+        return this.campaignData.name || ''
+      },
+      hasPosts: function () {
+        return this.posts && this.posts.length > 0
+      },
+      hasTypes: function () {
+        return this.types && this.types.length > 1
+      },
+      hasCategories: function () {
+        return this.categories && this.categories.length > 0
+      },
+      listView: function () {
+        return this.viewMode === ''
+      },
+      gridView: function () {
+        return this.viewMode === 'grid'
+      },
+      viewModeClass: function () {
+        return this.gridView ? this.gridContainer : this.listContainer
+      },
+      hasSelectedPosts: function () {
+        return this.selectedPosts && this.selectedPosts.length
 
-            if (!skipLoad) {
-                this.loadUrl(this.url, hashVals);
-            }
-        },
-        computed  : {
-            paginate        : function () {
-                return this.pagination.last_page !== 1;
-            },
-            isCampaign      : function () {
-                return !!this.campaignData;
-            },
-            pageName        : function () {
-                return this.campaignData.name || '';
-            },
-            hasPosts        : function () {
-                return this.posts && this.posts.length > 0;
-            },
-            hasTypes        : function () {
-                return this.types && this.types.length > 1;
-            },
-            hasCategories   : function () {
-                return this.categories && this.categories.length > 0;
-            },
-            listView        : function () {
-                return this.viewMode === 'list';
-            },
-            gridView        : function () {
-                return this.viewMode === 'grid';
-            },
-            viewModeClass   : function () {
-                return this.gridView ? 'small-up-1 medium-up-2 large-up-3 grid-view' : 'small-up-1 list-view';
-            },
-            hasSelectedPosts: function () {
-                return this.selectedPosts && this.selectedPosts.length;
+      },
+      allPostsSelected: function () {
+        return this.selectedPosts && this.selectedPosts.length === this.posts.length
+      }
+    },
+    watch: {
+      'data.pageNum': function (newValue, oldValue) {
+        let pageNum = parseInt(newValue, 10),
+          url
+        if (!newValue.length) {
+          return
+        }
+        if (pageNum >= 1 && pageNum <= this.pagination.last_page) {
+          if (pageNum < this.pagination.current_page) {
+            url = this.pagination.prev_page_url.replace(/page=([\d]+)/, function (a, b) {
+              return 'page=' + pageNum
+            })
+            this.loadPage(url)
+          }
+          if (pageNum > this.pagination.current_page) {
+            url = this.pagination.next_page_url.replace(/page=([\d]+)/, function (a, b) {
+              return 'page=' + pageNum
+            })
+            this.loadPage(url)
+          }
+          return
+        }
 
-            },
-            allPostsSelected: function () {
-                return this.selectedPosts && this.selectedPosts.length === this.posts.length;
-            }
-        },
-        watch     : {
-            'data.pageNum' : function (newValue, oldValue) {
-                let pageNum = parseInt(newValue, 10),
-                    url;
-                if (!newValue.length) {
-                    return;
-                }
-                if (pageNum >= 1 && pageNum <= this.pagination.last_page) {
-                    if (pageNum < this.pagination.current_page) {
-                        url = this.pagination.prev_page_url.replace(/page=([\d]+)/, function (a, b) {
-                            return 'page=' + pageNum;
-                        });
-                        this.loadPage(url);
-                    }
-                    if (pageNum > this.pagination.current_page) {
-                        url = this.pagination.next_page_url.replace(/page=([\d]+)/, function (a, b) {
-                            return 'page=' + pageNum;
-                        });
-                        this.loadPage(url);
-                    }
-                    return;
-                }
+        this.data.pageNum = this.pagination.current_page
 
-                this.data.pageNum = this.pagination.current_page;
+      },
+      'data.search': function (newValue, oldValue) {
+        this.posts = _.filter(this.allPosts, function (n) {
+          var regex = new RegExp(newValue, 'i')
+          return !!n.body.match(regex)
+        })
+      },
+      'data.category': function (newValue, oldValue) {
+        this.params.category = newValue
+        this.loadUrl(this.params)
+      },
+      'data.orderBy': function (newValue, oldValue) {
+        if (newValue === 'new') {
+          this.params.order = 'created_at'
+          this.params.orderBy = 'desc'
+        } else if (newValue === 'old') {
+          this.params.order = 'created_at'
+          this.params.orderBy = 'asc'
+        }
 
-            },
-            'data.search'  : function (newValue, oldValue) {
-                this.posts = _.filter(this.allPosts, function (n) {
-                    var regex = new RegExp(newValue, 'i');
-                    return !!n.body.match(regex);
-                });
-            },
-            'data.category': function (newValue, oldValue) {
-                this.params.category = newValue;
-                this.loadUrl(this.params);
-            },
-            'data.orderBy' : function (newValue, oldValue) {
-                if (newValue === 'new') {
-                    this.params.order = 'created_at';
-                    this.params.orderBy = 'desc';
-                } else if (newValue === 'old') {
-                    this.params.order = 'created_at';
-                    this.params.orderBy = 'asc';
-                }
+        this.loadUrl(this.params)
+      },
+      'data.type': function (newValue, oldValue) {
+        this.params.file_type = newValue
+        this.loadUrl(this.params)
+      },
+      'enabledTags': function (newValue, oldValue) {
+        this.params.tags = newValue
+        this.loadUrl(this.params)
+      },
+      'data.perPage': function (newValue) {
+        this.params.perPage = newValue
+        // this.loadUrl(this.params);
+      },
+      viewMode: function (newValue) {
+        location.hash = 'viewMode=' + newValue
+      }
+    },
+    methods: {
+      loadUrl: function (url, params) {
+        let vm = this
 
-                this.loadUrl(this.params);
-            },
-            'data.type'    : function (newValue, oldValue) {
-                this.params.file_type = newValue;
-                this.loadUrl(this.params);
-            },
-            'enabledTags'  : function (newValue, oldValue) {
-                this.params.tags = newValue;
-                this.loadUrl(this.params);
-            },
-            'data.perPage' : function (newValue) {
-                this.params.perPage = newValue;
-                // this.loadUrl(this.params);
-            },
-            viewMode       : function (newValue) {
-                location.hash = 'viewMode=' + newValue;
-            }
-        },
-        methods   : {
-            loadUrl    : function (url, params) {
-                let vm = this;
+        this.smoothScrollTo('body');
+        if (typeof url === 'string') {
+          this.url = url
+        } else {
+          params = url
+          url = this.url.replace(/page=[\d]+&?/, '')
+        }
 
-                if (typeof url === 'string') {
-                    this.url = url;
-                } else {
-                    params = url;
-                    url = this.url.replace(/page=[\d]+&?/, '');
-                }
+        params = params || {}
+        params.perPage = this.data.perPage
 
-                params = params || {};
-                params.perPage = this.data.perPage;
+        if (/\?/.test(url)) {
+          window.location.hash = url.split('?')[1]
+        } else {
+          window.location.hash = $.param(params)
+        }
 
-                if (/\?/.test(url)) {
-                    window.location.hash = url.split('?')[1];
-                } else {
-                    window.location.hash = $.param(params);
-                }
+        axios.get(url, { params: params }).then(function (response) {
+          let data = response.data || {}
+          vm.campaignData = data.campaign || false
+          vm.categories = data.categories || {}
+          vm.allPosts = data.posts && data.posts.data || {}
+          vm.posts = vm.allPosts
+          vm.client = data.client || {}
+          vm.tags = data.tags || []
+          vm.pagination = data.posts
+          vm.types = data.types || []
+          vm.loaded = true
+          vm.data.pageNum = vm.pagination.current_page
+        })
+      },
+      smoothScrollTo(selector) {
+          document.querySelector(selector).scrollIntoView({ 'behavior': 'smooth' })
+      },
+      getFacebookShareUrl: function (post) {
+        return 'https://www.facebook.com/sharer/sharer.php?u=' + [this.shareUrl, 'assets', post.uuid].join('/')
 
-                axios.get(url, {params: params}).then(function (response) {
-                    let data = response.data || {};
-                    vm.campaignData = data.campaign || false;
-                    vm.categories = data.categories || {};
-                    vm.allPosts = data.posts && data.posts.data || {};
-                    vm.posts = vm.allPosts;
-                    vm.client = data.client || {};
-                    vm.tags = data.tags || [];
-                    vm.pagination = data.posts;
-                    vm.types = data.types || [];
-                    vm.loaded = true;
-                    vm.data.pageNum = vm.pagination.current_page;
-                });
-            },
-            getFacebookShareUrl: function (post) {
-                return 'https://www.facebook.com/sharer/sharer.php?u=' + [this.shareUrl, 'assets', post.uuid].join('/');
+      },
+      getTwitterShareUrl: function (post) {
+        return 'https://twitter.com/intent/tweet?url=' + [this.shareUrl, 'assets', post.uuid].join('/')
+      },
+      downloadUrl: function (post) {
+        return this.requestUrl + (post.url ? post.url : '/download/' + post.uuid)
+      },
+      download: function (post) {
+        // gtmEvents.log(this.downloadCategory, this.downloadAction, post.url ? post.url : post.file);
+      },
 
-            },
-            getTwitterShareUrl: function (post) {
-                return 'https://twitter.com/intent/tweet?url=' + [this.shareUrl, 'assets', post.uuid].join('/');
-            },
-            downloadUrl: function (post) {
-                return this.requestUrl + (post.url ? post.url : '/download/' + post.uuid);
-            },
-            download   : function (post) {
-                // gtmEvents.log(this.downloadCategory, this.downloadAction, post.url ? post.url : post.file);
-            },
+      closeModal: function () {
+        let vm = this
+        setTimeout(function () {
+          vm.modal = {}
+          MicroModal.close('posts-modal') // [1]
+        }, 500)
+      },
+      showModal: function (post) {
+        let vm = this
 
-            closeModal           : function () {
-                let vm = this;
-                setTimeout(function () {
-                    vm.modal = {};
-                    MicroModal.close('posts-modal'); // [1]
-                }, 500);
-            },
-            showModal            : function (post) {
-                let vm = this;
+        this.modal = post
+        this.modal.image = this.modal.file_path.match(/\.gif/) ? this.modal.file_path : (this.modal.thumbnail_path || this.modal.file_path)
+        MicroModal.show('posts-modal', {
+          onClose: function () {
+            vm.modal = {}
+          }
+        }) // [1]
+      },
+      isTagSelected (name) {
+        return this.inArray(this.enabledTags, name)
+      },
+      inArray (haystack, needle) {
+        return _.indexOf(haystack, needle) > -1
+      },
+      videoSrc (url) {
+        return url.replace('&download=1', '')
+      },
+      addTag (name) {
+        this.enabledTags.push(name)
+      },
+      removeTag (name) {
+        this.enabledTags = this.enabledTags.filter(function (val) {
+          return val !== name
 
-                this.modal = post;
-                this.modal.image = this.modal.file_path.match(/\.gif/) ? this.modal.file_path : (this.modal.thumbnail_path || this.modal.file_path);
-                MicroModal.show('posts-modal', {
-                    onClose: function () {
-                        vm.modal = {};
-                    }
-                }); // [1]
-            },
-            isTagSelected(name) {
-                return this.inArray(this.enabledTags, name);
-            },
-            inArray(haystack, needle) {
-                return _.indexOf(haystack, needle) > -1;
-            },
-            videoSrc(url) {
-                return url.replace('&download=1', '');
-            },
-            addTag(name) {
-                this.enabledTags.push(name);
-            },
-            removeTag(name) {
-                this.enabledTags = this.enabledTags.filter(function (val) {
-                    return val !== name;
+        })
+      },
+      selectTag: function (name) {
+        if (this.isTagSelected(name)) {
+          this.removeTag(name)
+        } else {
+          this.addTag(name)
+        }
+      },
+      checked: function (val) {
+        if (val.checked) {
+          this.addSelectedPost(val.id)
+        } else {
+          this.removeSelectedPost(val.id)
+        }
+      },
+      removeSelectedPost (id) {
+        if (this.isPostSelected(id)) {
+          this.selectedPosts.splice(this.selectedPosts.indexOf(id), 1)
+        }
 
-                });
-            },
-            selectTag            : function (name) {
-                if (this.isTagSelected(name)) {
-                    this.removeTag(name);
-                } else {
-                    this.addTag(name);
-                }
-            },
-            checked              : function (val) {
-                if (val.checked) {
-                    this.addSelectedPost(val.id);
-                } else {
-                    this.removeSelectedPost(val.id);
-                }
-            },
-            removeSelectedPost(id) {
-                if (this.isPostSelected(id)) {
-                    this.selectedPosts.splice(this.selectedPosts.indexOf(id), 1);
-                }
+      },
+      addSelectedPost (id) {
+        if (!this.isPostSelected(id)) {
+          this.selectedPosts.push(id)
+        }
+      },
+      isPostSelected: function (id) {
+        return this.inArray(this.selectedPosts, id)
+      },
+      deselectAllPosts: function () {
+        this.selectedPosts = []
+      },
+      selectAllPosts: function () {
+        let vm = this
 
-            },
-            addSelectedPost(id) {
-                if (!this.isPostSelected(id)) {
-                    this.selectedPosts.push(id);
-                }
-            },
-            isPostSelected       : function (id) {
-                return this.inArray(this.selectedPosts, id);
-            },
-            deselectAllPosts     : function () {
-                this.selectedPosts = [];
-            },
-            selectAllPosts       : function () {
-                let vm = this;
+        if (this.allPostsSelected) {
+          vm.selectedPosts = []
+          return
+        }
+        vm.selectedPosts = []
+        this.posts.forEach(function (n) {
+          vm.selectedPosts.push(n.id)
+        })
 
-                if (this.allPostsSelected) {
-                    vm.selectedPosts = [];
-                    return;
-                }
-                vm.selectedPosts = [];
-                this.posts.forEach(function (n) {
-                    vm.selectedPosts.push(n.id);
-                });
+      },
+      filterByTag: function (name) {
+        return this.allPosts.filter(function (n) {
+          return n.tag_names.indexOf(name) > -1
+        })
+      },
+      downloadSelectedPosts: function () {
+        window.location = this.requestUrl + '/download-batch?d=' + this.selectedPosts.join(',')
+        this.deselectAllPosts()
+      },
+      firstPage: function () {
+        this.loadUrl(this.pagination.first_page_url + '&' + $.param(this.params))
 
-            },
-            filterByTag          : function (name) {
-                return this.allPosts.filter(function (n) {
-                    return n.tag_names.indexOf(name) > -1;
-                });
-            },
-            downloadSelectedPosts: function () {
-                window.location = this.requestUrl + '/download-batch?d=' + this.selectedPosts.join(',');
-                this.deselectAllPosts();
-            },
-            firstPage            : function () {
-                this.loadUrl(this.pagination.first_page_url + '&' + $.param(this.params));
+      },
+      lastPage: function () {
+        this.loadUrl(this.pagination.last_page_url + '&' + $.param(this.params))
 
-            },
-            lastPage             : function () {
-                this.loadUrl(this.pagination.last_page_url + '&' + $.param(this.params));
+      },
+      loadPage: function (url) {
+        this.loadUrl(url + '&' + $.param(this.params))
 
-            },
-            loadPage             : function (url) {
-                this.loadUrl(url + '&' + $.param(this.params));
+      },
+      nextPage: function () {
+        this.loadUrl(this.pagination.next_page_url + '&' + $.param(this.params))
+      },
+      prevPage: function () {
+        this.loadUrl(this.pagination.prev_page_url + '&' + $.param(this.params))
+      },
+      paginationAction: function () {
 
-            },
-            nextPage             : function () {
-                this.loadUrl(this.pagination.next_page_url + '&' + $.param(this.params));
-            },
-            prevPage             : function () {
-                this.loadUrl(this.pagination.prev_page_url + '&' + $.param(this.params));
-            },
-            paginationAction     : function () {
+      },
+      changePage: function (newValue) {
+        let pageNum = parseInt(newValue, 10),
+          url
+        if (!newValue.length) {
+          return true
+        }
+        if (pageNum >= 1 && pageNum <= this.pagination.last_page) {
+          if (pageNum < this.pagination.current_page) {
+            url = this.pagination.prev_page_url.replace(/page=([\d]+)/, function () {
+              return 'page=' + pageNum
+            })
+            this.loadPage(url)
+          }
+          if (pageNum > this.pagination.current_page) {
+            url = this.pagination.next_page_url.replace(/page=([\d]+)/, function () {
+              return 'page=' + pageNum
+            })
+            this.loadPage(url)
+          }
+          return true
+        }
 
-            },
-            changePage           : function (newValue) {
-                let pageNum = parseInt(newValue, 10),
-                    url;
-                if (!newValue.length) {
-                    return true;
-                }
-                if (pageNum >= 1 && pageNum <= this.pagination.last_page) {
-                    if (pageNum < this.pagination.current_page) {
-                        url = this.pagination.prev_page_url.replace(/page=([\d]+)/, function () {
-                            return 'page=' + pageNum;
-                        });
-                        this.loadPage(url);
-                    }
-                    if (pageNum > this.pagination.current_page) {
-                        url = this.pagination.next_page_url.replace(/page=([\d]+)/, function () {
-                            return 'page=' + pageNum;
-                        });
-                        this.loadPage(url);
-                    }
-                    return true;
-                }
-
-                return false;
-            }
-        },
-    };
+        return false
+      }
+    },
+  }
 </script>
 
 <style lang="scss">
     @import '../assets/sass/app.scss';
 
     .post-content {
-        margin-bottom : 1rem;
+        margin-bottom: 1rem;
     }
+
+    .vue-media-gallery  {
+        .modal {
+            .buttons {
+                margin-top: 2rem;
+
+                a {
+                    margin: 0 .5rem;
+                }
+            }
+        }
+
+        .modal__content {
+            margin: 1rem 0;
+        }
+    }
+
+
 </style>
