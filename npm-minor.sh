@@ -5,6 +5,5 @@ set -e
 
 npm version minor
 
-git commit -m 'minor version update'
+npm publish
 
-git push
