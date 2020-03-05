@@ -1,70 +1,72 @@
 {
-    "name": "@pgp/vue-media-gallery",
-    "version": "0.1.0",
-    "description": "A simple component to display media gallery assests for The Public Good Projects",
-    "main": "dist/pgpVueMediaGallery.umd.min.js",
-    "module": "dist/pgpVueMediaGallery.common.js",
-    "unpkg": "dist/pgpVueMediaGallery.umd.min.js",
-    "author": "Cameron Wiley <cam.wiley@publicgoodprojects.org> https://publicgoodprojects.org",
-    "license": "MIT",
-    "scripts": {
-        "serve": "vue-cli-service serve",
-        "build": "vue-cli-service build",
-        "build-bundle": "vue-cli-service build --target lib --name pgpVueMediaGallery ./src/index.js",
-        "lint": "vue-cli-service lint"
+  "name": "@pgp/vue-media-gallery",
+  "version": "0.1.0",
+  "description": "A simple component to display media gallery assests for The Public Good Projects",
+  "author": "Cameron Wiley <cam.wiley@publicgoodprojects.org> https://publicgoodprojects.org",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "build-bundle": "vue-cli-service build --target lib --name pgpVueMediaGallery ./src/index.js"
+  },
+  "main": "dist/pgpVueMediaGallery.umd.min.js",
+  "module": "dist/pgpVueMediaGallery.common.js",
+  "unpkg": "dist/pgpVueMediaGallery.umd.min.js",
+  "files": [
+    "dist/*",
+    "src/*",
+    "public/*",
+    "*.json",
+    "*.js"
+  ],
+  "dependencies": {
+    "core-js": "^3.6.4"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.1",
+    "@vue/cli-plugin-babel": "~4.2.3",
+    "@vue/cli-service": "~4.2.3",
+    "axios": "^0.19.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.2.3",
+    "foundation-sites": "^6.6.1",
+    "jquery": "^3.4.1",
+    "lodash": "^4.17.15",
+    "micromodal": "^0.3.2",
+    "node-sass": "^4.13.1",
+    "sass-loader": "^7.3.1",
+    "smoothscroll-polyfill": "^0.4.4",
+    "vue": "^2.6.11",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
     },
-    "files": [
-        "dist/*",
-        "src/*",
-        "public/*",
-        "*.json",
-        "*.js"
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
     ],
-    "dependencies": {},
-    "devDependencies": {
-        "@fortawesome/fontawesome-free": "^5.12.1",
-        "@vue/cli-plugin-babel": "^3.12.1",
-        "@vue/cli-service": "^3.12.1",
-        "axios": "^0.19.2",
-        "babel-eslint": "^10.1.0",
-        "eslint": "^5.16.0",
-        "eslint-plugin-vue": "^5.2.3",
-        "foundation-sites": "^6.6.1",
-        "jquery": "^3.4.1",
-        "lodash": "^4.17.15",
-        "micromodal": "^0.3.2",
-        "node-sass": "^4.13.1",
-        "sass-loader": "^7.3.1",
-        "smoothscroll-polyfill": "^0.4.4",
-        "vue": "^2.6.11",
-        "vue-template-compiler": "^2.6.11"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ThePublicGoodProjects/vue-media-gallery.git"
-    },
-    "eslintConfig": {
-        "root": true,
-        "env": {
-            "node": true
-        },
-        "extends": [
-            "plugin:vue/essential",
-            "eslint:recommended"
-        ],
-        "rules": {},
-        "parserOptions": {
-            "parser": "babel-eslint"
-        }
-    },
-    "postcss": {
-        "plugins": {
-            "autoprefixer": {}
-        }
-    },
-    "browserslist": [
-        "> 1%",
-        "last 2 versions",
-        "not ie <= 8"
-    ]
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ThePublicGoodProjects/vue-media-gallery.git"
+  }
 }
